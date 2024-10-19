@@ -6,12 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".fragments.HomeScreenFragment">
 
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_100"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="12:59"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_50"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_semibold"
+        android:text="Sun, 20 October 26 C"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_20"
+        android:layout_marginTop="@dimen/size_8"
+        app:layout_constraintEnd_toEndOf="@+id/textView"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
     <ImageButton
         android:id="@+id/image_btn_drawer"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher"
+        android:layout_width="@dimen/size_24"
+        android:layout_height="@dimen/size_24"
         android:layout_margin="50dp"
+        android:src="@drawable/ic_up_arrow"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

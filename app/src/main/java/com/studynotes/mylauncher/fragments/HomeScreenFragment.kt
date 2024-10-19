@@ -1,10 +1,6 @@
 package com.studynotes.mylauncher.fragments
 
-import android.app.WallpaperManager
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +11,6 @@ import com.studynotes.mylauncher.databinding.FragmentHomeScreenBinding
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
     private lateinit var binding: FragmentHomeScreenBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
