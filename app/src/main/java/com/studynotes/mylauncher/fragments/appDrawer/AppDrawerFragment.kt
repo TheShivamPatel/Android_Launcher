@@ -53,7 +53,6 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
     }
 
     private fun setUpRecyclerView() {
-
         context?.let {
             adapter = AppDrawerAdapter(getInstalledAppList(it))
             binding.appsRv.layoutManager = GridLayoutManager(it, 4)

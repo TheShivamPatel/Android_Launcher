@@ -44,18 +44,10 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
     private fun setUpOnClick() {
         binding.imageBtnDrawer.setOnClickListener {
-            loadFragment(fragment = AppDrawerFragment())
+//            loadFragment(fragment = AppDrawerFragment())
         }
     }
 
-    private fun loadFragment(fragment: AppDrawerFragment) {
 
-        fragment.let {
-            activity?.supportFragmentManager?.beginTransaction()?.apply {
-                replace(R.id.container, it)
-                    .commit()
-            }
-        }
-    }
 
 }
