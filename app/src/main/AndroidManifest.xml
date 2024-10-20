@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_WALLPAPER_INTERNAL" tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
 
     <application
         android:allowBackup="true"
@@ -18,7 +21,7 @@
         android:theme="@style/Theme.MyLauncher"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:clearTaskOnLaunch="true"
             android:exported="true"
             android:launchMode="singleTask"
@@ -26,8 +29,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.HOME" />    <!-- It will cause out application to behave like a launcher-->
-                <category android:name="android.intent.category.DEFAULT" />
+<!--                <category android:name="android.intent.category.HOME" />    &lt;!&ndash; It will cause out application to behave like a launcher&ndash;&gt;-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
             </intent-filter>
         </activity>
     </application>

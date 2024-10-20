@@ -1,15 +1,16 @@
-package com.techprojects.nextlevel_airesumebuilder.viewUtils
+package com.studynotes.mylauncher.viewUtils
 
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.techprojects.nextlevel_airesumebuilder.viewUtils.ViewUtils.hideKeyboard
 import kotlin.math.roundToInt
 
 
@@ -102,5 +103,28 @@ object ViewUtils {
         }
         return shape
     }
+
+
+    fun setTransparentNavigationBar(activity: Activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.window?.apply {
+                navigationBarColor = Color.TRANSPARENT
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    decorView.systemUiVisibility =
+                        View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                } else {
+                    decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                }
+            }
+        }
+    }
+
+    fun setAdaptiveNavigationBarColor(activity: Activity, color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.window?.navigationBarColor = color
+        }
+    }
+
+
 
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingBottom="@dimen/size_28">
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/img_icon"
+        android:layout_width="@dimen/size_55"
+        android:layout_height="@dimen/size_55"
+        android:src="@mipmap/ic_launcher"
+        app:shapeAppearanceOverlay="@style/RoundedSquare"/>
+
+    <TextView
+        android:id="@+id/tv_app_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WhatsApp"
+        android:layout_marginTop="@dimen/size_6"
+        android:textSize="@dimen/text_size_12"
+        android:gravity="center"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textColor="@color/white"
+        android:fontFamily="@font/montserrat_semibold"/>
+
+</LinearLayout>

@@ -1,12 +1,15 @@
-package com.studynotes.mylauncher
+package com.studynotes.mylauncher.activity
 
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.studynotes.mylauncher.R
 import com.studynotes.mylauncher.databinding.ActivityMainBinding
-import com.studynotes.mylauncher.fragments.HomeScreenFragment
-import com.techprojects.nextlevel_airesumebuilder.viewUtils.ViewUtils
+import com.studynotes.mylauncher.fragments.home.HomeScreenFragment
+import com.studynotes.mylauncher.viewUtils.ViewUtils
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        ViewUtils.setTransparentNavigationBar(this)
         setUpViews()
         setUpStatusBar()
     }
@@ -47,4 +51,20 @@ class MainActivity : AppCompatActivity() {
             setUpFragment(HomeScreenFragment())
         }
     }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        return when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                Log.d("zzz", "Action was DOWN")
+                true
+            }
+            MotionEvent.ACTION_UP -> {
+                Log.d("zzz", "Action was UP")
+                true
+            }
+            else -> super.onTouchEvent(event)
+        }
+    }
+
+
 }

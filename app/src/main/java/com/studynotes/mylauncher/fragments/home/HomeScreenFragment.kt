@@ -1,12 +1,15 @@
-package com.studynotes.mylauncher.fragments
+package com.studynotes.mylauncher.fragments.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.studynotes.mylauncher.R
 import com.studynotes.mylauncher.databinding.FragmentHomeScreenBinding
+import com.studynotes.mylauncher.fragments.appDrawer.AppDrawerFragment
+import com.studynotes.mylauncher.viewUtils.ViewUtils
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
@@ -24,6 +27,11 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
         super.onViewCreated(view, savedInstanceState)
         setUpViews()
         setUpOnClick()
+        setUpStatusNavigationBarTheme()
+    }
+
+    private fun setUpStatusNavigationBarTheme() {
+        activity?.let { ViewUtils.setTransparentNavigationBar(it) }
     }
 
     private fun setUpViews() {
