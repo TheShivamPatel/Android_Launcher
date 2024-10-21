@@ -24,16 +24,16 @@ class AppDrawerAdapter(
             tvAppLabel.text = appInfo.label
             imgIcon.setImageDrawable(appInfo.icon)
 
-//            root.setOnClickListener {
-//                val launchIntent = holder.itemView.context.packageManager
-//                    .getLaunchIntentForPackage(appInfo.packageName!!)
-//
-//                if (launchIntent != null){
-//                    holder.itemView.context.startActivity(launchIntent)
-//                }else{
-//
-//                }
-//            }
+            root.setOnClickListener {
+                val launchIntent = holder.itemView.context.packageManager
+                    .getLaunchIntentForPackage(appInfo.packageName!!)
+
+                if (launchIntent != null){
+                    holder.itemView.context.startActivity(launchIntent)
+                }else{
+
+                }
+            }
 
         }
     }
