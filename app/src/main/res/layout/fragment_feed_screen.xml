@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/white"
-    tools:context=".fragments.appDrawer.AppDrawerFragment">
+    tools:context=".fragments.feeds.FeedScreenFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/blurBgLayout"
@@ -19,16 +19,32 @@
         app:layout_constraintVertical_bias="0.5" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16"
+        android:layout_marginTop="@dimen/size_34"
         android:fontFamily="@font/montserrat_semibold"
-        android:text="Top Stories"
+        android:text="Top stories"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_26"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="@dimen/text_size_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+        <include layout="@layout/news_card_item"/>
+        <include layout="@layout/news_card_item"/>
+        <include layout="@layout/news_card_item"/>
+        <include layout="@layout/news_card_item"/>
+        <include layout="@layout/news_card_item"/>
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
