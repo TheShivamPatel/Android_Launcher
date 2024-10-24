@@ -17,5 +17,6 @@
     <color name="grey_800">#424242</color>
     <color name="grey_900">#131616</color>
     <color name="primaryCardColor">#22252a</color>
+    <color name="secondaryCardColor">#1EFFFFFF</color>
 
 </resources>

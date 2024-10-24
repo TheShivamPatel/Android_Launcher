@@ -20,7 +20,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.studynotes.mylauncher.R
-import com.studynotes.mylauncher.activity.MainActivity
+import com.studynotes.mylauncher.activity.mainHome.MainActivity
 import com.studynotes.mylauncher.databinding.FragmentAppDrawerBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerAdapter
 import com.studynotes.mylauncher.model.AppInfo

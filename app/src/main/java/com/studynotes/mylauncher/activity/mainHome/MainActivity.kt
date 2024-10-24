@@ -1,4 +1,4 @@
-package com.studynotes.mylauncher.activity
+package com.studynotes.mylauncher.activity.mainHome
 
 import android.os.Bundle
 import android.view.View
@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
             val currentTime = getCurrentTime()
 
             val wallpaperResource = when (currentTime) {
-                TimeBase.MORNING -> R.drawable.morining_wallpaper_1
-                TimeBase.EVENING -> R.drawable.evening_wallpaper_1
+                TimeBase.MORNING -> R.drawable.evening_wallpaper_1
+                TimeBase.EVENING -> R.drawable.morining_wallpaper_1
                 TimeBase.NIGHT -> R.drawable.night_wallpaper_1
             }
 
