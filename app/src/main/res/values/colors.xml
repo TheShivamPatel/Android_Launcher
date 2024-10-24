@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
+    <color name="translucent">#1EFFFFFF</color>
 
 
     <color name="grey_50">#EFF0F6</color>
@@ -15,5 +16,6 @@
     <color name="grey_700">#6C7278</color>
     <color name="grey_800">#424242</color>
     <color name="grey_900">#131616</color>
+    <color name="primaryCardColor">#22252a</color>
 
 </resources>

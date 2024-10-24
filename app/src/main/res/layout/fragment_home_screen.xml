@@ -7,7 +7,7 @@
     tools:context=".fragments.home.HomeScreenFragment">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_clock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_100"
@@ -29,69 +29,8 @@
         android:text="Sun, 20 October 26°C"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_20"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <ImageButton
-        android:id="@+id/image_btn_drawer"
-        android:layout_width="@dimen/size_50"
-        android:layout_height="@dimen/size_50"
-        android:layout_margin="@dimen/size_12"
-        android:background="@color/transparent"
-        android:padding="@dimen/size_16"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_up_arrow"
-        app:layout_constraintBottom_toTopOf="@+id/apps_rv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/linearLayout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:orientation="horizontal"-->
-    <!--        android:layout_marginBottom="@dimen/size_30"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.5"-->
-    <!--        app:layout_constraintStart_toStartOf="parent">-->
-
-    <!--        <include-->
-    <!--            layout="@layout/item_app_icon"-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_weight="1" />-->
-
-    <!--        <include-->
-    <!--            layout="@layout/item_app_icon"-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_weight="1" />-->
-
-    <!--        <include-->
-    <!--            layout="@layout/item_app_icon"-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_weight="1" />-->
-
-    <!--        <include-->
-    <!--            layout="@layout/item_app_icon"-->
-    <!--            android:layout_width="0dp"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_weight="1" />-->
-    <!--    </LinearLayout>-->
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/apps_rv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:padding="@dimen/size_12"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintEnd_toEndOf="@+id/tv_clock"
+        app:layout_constraintStart_toStartOf="@+id/tv_clock"
+        app:layout_constraintTop_toBottomOf="@+id/tv_clock" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

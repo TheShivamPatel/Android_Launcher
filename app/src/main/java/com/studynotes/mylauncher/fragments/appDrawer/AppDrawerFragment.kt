@@ -1,5 +1,6 @@
 package com.studynotes.mylauncher.fragments.appDrawer
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,11 +14,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
 import com.studynotes.mylauncher.R
+import com.studynotes.mylauncher.activity.MainActivity
 import com.studynotes.mylauncher.databinding.FragmentAppDrawerBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerAdapter
 import com.studynotes.mylauncher.model.AppInfo
@@ -30,7 +33,6 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
     private var packageManager: PackageManager? = null
     private var appsList: MutableList<AppInfo> = mutableListOf()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +43,7 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         activity?.let {
             ViewUtils.setTransparentNavigationBar(it)
         }
@@ -52,12 +55,26 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
         setUpRecyclerView()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setUpRecyclerView() {
         context?.let {
             adapter = AppDrawerAdapter(getInstalledAppList(it))
             binding.appsRv.layoutManager = GridLayoutManager(it, 4)
+            binding.appsRv.adapter = adapter
+
+            // Handle touch events to manage ViewPager2 scrolling
+            binding.appsRv.setOnTouchListener { _, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_MOVE -> {
+                        (activity as? MainActivity)?.disableViewPagerScrolling(true)
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                        (activity as? MainActivity)?.disableViewPagerScrolling(false)
+                    }
+                }
+                false
+            }
         }
-        binding.appsRv.adapter = adapter
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -70,7 +87,6 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
 
         for (ri in allApps) {
             val appPackageName = ri.activityInfo.packageName
-
             val app = AppInfo(
                 label = ri.loadLabel(packageManager).toString(),
                 packageName = appPackageName,
@@ -78,7 +94,6 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
             )
             Log.i("AppDrawerFragment", "Social app found: ${app.packageName}")
             appsList.add(app)
-
         }
         return appsList
     }
@@ -91,7 +106,6 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
             val gradientDrawable = GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 intArrayOf(Color.argb(150, 0, 0, 0), Color.argb(200, 0, 0, 0))
-//                intArrayOf(Color.argb(255, 101, 65, 69), Color.argb(255, 54, 28, 29))
             )
             binding.blurBgLayout.background = gradientDrawable
         } else {
@@ -102,6 +116,4 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
             binding.blurBgLayout.background = gradientDrawable
         }
     }
-
-
 }
