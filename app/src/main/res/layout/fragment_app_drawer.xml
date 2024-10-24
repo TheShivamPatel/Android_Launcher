@@ -6,43 +6,55 @@
     android:layout_height="match_parent"
     tools:context=".fragments.appDrawer.AppDrawerFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/blurBgLayout"
+    <LinearLayout
+        android:id="@+id/ll_search"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/size_80"
+        android:layout_marginHorizontal="@dimen/size_26"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/size_16"
-        android:layout_marginTop="@dimen/size_34"
-        android:fontFamily="@font/montserrat_semibold"
-        android:text="All apps"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_search"
+            android:background="@drawable/rounded_bg"
+            android:hint="Search Apps"
+            android:drawablePadding="@dimen/size_16"
+            android:textColorHint="@color/grey_300"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="@dimen/size_16"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/setting_btn"
+            android:layout_width="@dimen/size_26"
+            android:layout_height="@dimen/size_26"
+            android:src="@drawable/icon_settings"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="@dimen/size_12"
+            android:background="@color/transparent"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/apps_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="@dimen/size_12"
+        android:layout_marginBottom="@dimen/size_90"
+        android:padding="@dimen/size_26"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        android:layout_marginBottom="@dimen/size_20"/>
-
+        app:layout_constraintTop_toBottomOf="@+id/ll_search" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

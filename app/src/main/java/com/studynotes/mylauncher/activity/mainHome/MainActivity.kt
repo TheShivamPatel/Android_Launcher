@@ -7,10 +7,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.studynotes.mylauncher.R
+import com.studynotes.mylauncher.adapter.ScreenSlidePagerAdapter
 import com.studynotes.mylauncher.adapter.VerticalSlidePagerAdapter
 import com.studynotes.mylauncher.databinding.ActivityMainBinding
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
+import com.studynotes.mylauncher.viewUtils.FadePageTransformer
 import com.studynotes.mylauncher.viewUtils.VerticalPageTransformer
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import java.util.Calendar
@@ -18,9 +20,8 @@ import java.util.Calendar
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var pagerAdapter: VerticalSlidePagerAdapter? = null
+    private var pagerAdapter: ScreenSlidePagerAdapter? = null
     private var wallpaperState : Boolean= false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,9 +43,9 @@ class MainActivity : AppCompatActivity() {
             val currentTime = getCurrentTime()
 
             val wallpaperResource = when (currentTime) {
-                TimeBase.MORNING -> R.drawable.evening_wallpaper_1
-                TimeBase.EVENING -> R.drawable.morining_wallpaper_1
-                TimeBase.NIGHT -> R.drawable.night_wallpaper_1
+                TimeBase.MORNING -> R.drawable.bg_1
+                TimeBase.EVENING -> R.drawable.bg_2
+                TimeBase.NIGHT -> R.drawable.bg_3
             }
 
             binding.mainWallpaper.setImageDrawable(ContextCompat.getDrawable(this, wallpaperResource))
@@ -54,7 +55,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setUpStatusBar() {
         ViewUtils.setTransparentNavigationBar(this)
         ViewUtils.setUpStatusBar(this, false)
@@ -62,34 +62,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpViewPager() {
-        pagerAdapter = VerticalSlidePagerAdapter(this)
+        pagerAdapter = ScreenSlidePagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
-        binding.viewPager.setCurrentItem(0, false)
-        binding.viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
-        binding.viewPager.setPageTransformer(VerticalPageTransformer())
-
-        setViewPagerFlingSensitivity(binding.viewPager)
+        binding.viewPager.setCurrentItem(1, false)
+        binding.viewPager.setPageTransformer(FadePageTransformer())
     }
 
-    fun disableViewPagerScrolling(disable: Boolean) {
-        binding.viewPager.isUserInputEnabled = !disable
-    }
-
-    private fun setViewPagerFlingSensitivity(viewPager: ViewPager2) {
-        try {
-            val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
-            recyclerViewField.isAccessible = true
-            val recyclerView = recyclerViewField.get(viewPager) as RecyclerView
-
-            val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
-            touchSlopField.isAccessible = true
-            val touchSlop = touchSlopField.get(recyclerView) as Int
-
-            touchSlopField.set(recyclerView, touchSlop * 2)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
     enum class TimeBase{
         MORNING, EVENING, NIGHT
@@ -103,7 +81,6 @@ class MainActivity : AppCompatActivity() {
             else -> TimeBase.NIGHT
         }
     }
-
 
     override fun onResume() {
         super.onResume()

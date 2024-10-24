@@ -19,14 +19,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.studynotes.mylauncher.R
 import com.studynotes.mylauncher.activity.mainHome.MainActivity
+import com.studynotes.mylauncher.bottomSheet.SelectAppDrawerLayoutBottomSheet
 import com.studynotes.mylauncher.databinding.FragmentAppDrawerBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerAdapter
+import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
 import com.studynotes.mylauncher.model.AppInfo
+import com.studynotes.mylauncher.prefs.BasePreferenceManager
+import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 
-class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
+class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer), SelectAppDrawerLayoutBottomSheet.OnLayoutSelectedListener {
 
     private lateinit var binding: FragmentAppDrawerBinding
     private var adapter: AppDrawerAdapter? = null
@@ -47,34 +52,38 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
         activity?.let {
             ViewUtils.setTransparentNavigationBar(it)
         }
-        applyGlassorphismEffect()
         setUpViews()
+        setUpOnClick()
+    }
+
+    private fun setUpOnClick() {
+        binding.settingBtn.setOnClickListener {
+            SelectAppDrawerLayoutBottomSheet(this).show(
+                requireActivity().supportFragmentManager,
+                "AppDrawerBottomSheet"
+            )
+        }
     }
 
     private fun setUpViews() {
-        setUpRecyclerView()
+        context?.let {
+            val selectedDrawerLayout = BasePreferenceManager.getString(it, SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT,)
+            setUpRecyclerView(selectedDrawerLayout)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun setUpRecyclerView() {
+    private fun setUpRecyclerView(layoutType: String) {
         context?.let {
-            adapter = AppDrawerAdapter(getInstalledAppList(it))
-            binding.appsRv.layoutManager = GridLayoutManager(it, 4)
-            binding.appsRv.adapter = adapter
-
-            // Handle touch events to manage ViewPager2 scrolling
-            binding.appsRv.setOnTouchListener { _, event ->
-                when (event.action) {
-                    MotionEvent.ACTION_MOVE -> {
-                        (activity as? MainActivity)?.disableViewPagerScrolling(true)
-                    }
-                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                        (activity as? MainActivity)?.disableViewPagerScrolling(false)
-                    }
-                }
-                false
+            adapter = AppDrawerAdapter(getInstalledAppList(it), layoutType)
+            if (layoutType == AppDrawerLayout.GRID_LAYOUT.toString()) {
+                binding.appsRv.layoutManager = GridLayoutManager(it, 4)
+            } else {
+                binding.appsRv.layoutManager = LinearLayoutManager(it)
             }
+            binding.appsRv.adapter = adapter
         }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -98,22 +107,8 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer) {
         return appsList
     }
 
-    private fun applyGlassorphismEffect() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val blurEffect = RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
-            binding.blurBgLayout.setRenderEffect(blurEffect)
-
-            val gradientDrawable = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(Color.argb(150, 0, 0, 0), Color.argb(200, 0, 0, 0))
-            )
-            binding.blurBgLayout.background = gradientDrawable
-        } else {
-            val gradientDrawable = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(Color.argb(120, 0, 0, 0), Color.argb(120, 50, 50, 50))
-            )
-            binding.blurBgLayout.background = gradientDrawable
-        }
+    override fun onLayoutSelected(layoutType: String) {
+        setUpRecyclerView(layoutType)
     }
+
 }
