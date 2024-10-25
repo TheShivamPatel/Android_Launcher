@@ -47,7 +47,7 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
             )) {
                 AppDrawerLayout.LINEAR_LAYOUT.toString() -> binding.simpleListRadioButton.isChecked = true
                 AppDrawerLayout.GRID_LAYOUT.toString() -> binding.gridListRadioButton.isChecked = true
-                else -> binding.simpleListRadioButton.isChecked = true
+                else -> binding.gridListRadioButton.isChecked = true
             }
 
             binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->

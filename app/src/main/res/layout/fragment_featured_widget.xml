@@ -25,7 +25,7 @@
             android:layout_marginStart="@dimen/size_20"
             android:layout_marginEnd="@dimen/size_10"
             android:layout_weight="1"
-            android:background="@drawable/widget_card_bg"
+            android:background="@drawable/glassmorphism_off"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -53,7 +53,7 @@
             android:layout_marginStart="@dimen/size_10"
             android:layout_marginEnd="@dimen/size_25"
             android:layout_weight="1"
-            android:background="@drawable/widget_card_bg"
+            android:background="@drawable/widget_toggle_on_off"
             android:orientation="vertical" />
 
     </LinearLayout>
@@ -65,6 +65,7 @@
         android:layout_height="@dimen/size_160"
         android:layout_marginHorizontal="@dimen/size_25"
         android:layout_marginTop="@dimen/size_16"
+        android:visibility="gone"
         android:background="@drawable/widget_card_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

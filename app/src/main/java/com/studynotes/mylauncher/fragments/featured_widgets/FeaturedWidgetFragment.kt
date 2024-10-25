@@ -40,23 +40,12 @@ class FeaturedWidgetFragment : Fragment(R.layout.fragment_featured_widget) {
     }
 
     private fun setUpWidgetTile() {
-        val wallpaperTile = binding.wallpaperWidget.background as? GradientDrawable
-        setUpWallpaperTile(wallpaperTile, SharedPrefsConstants.KEY_AUTO_WALLPAPER)
-
-        val studyModeTile = binding.studyModeWidget.background as? GradientDrawable
-        setUpWallpaperTile(studyModeTile, SharedPrefsConstants.KEY_STUDY_MODE)
-    }
-
-    private fun setUpWallpaperTile(background: GradientDrawable?, keyName: String) {
-        context?.let { it1 ->
-            val wallpaperState = BasePreferenceManager.getBoolean(it1, keyName, false)
-            if (wallpaperState) {
-                background?.setColor(ContextCompat.getColor(it1, R.color.white))
-            } else {
-                background?.setColor(ContextCompat.getColor(it1, R.color.primaryCardColor))
-            }
+        context?.let {
+            val wallpaperState = BasePreferenceManager.getBoolean(it, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
+            toggleWallpaperState(wallpaperState, it ,SharedPrefsConstants.KEY_AUTO_WALLPAPER)
         }
     }
+
 
     private fun setUpOnClick() {
         binding.studyModeMore.setOnClickListener {
@@ -65,45 +54,23 @@ class FeaturedWidgetFragment : Fragment(R.layout.fragment_featured_widget) {
         binding.wallpaperWidget.setOnClickListener {
             context?.let { it1 ->
                 val wallpaperState = BasePreferenceManager.getBoolean(it1, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
-                setAutoWallpaper(wallpaperState, it1, SharedPrefsConstants.KEY_AUTO_WALLPAPER)
-            }
-        }
-        binding.studyModeWidget.setOnClickListener {
-            context?.let { it1 ->
-                val studyModeState = BasePreferenceManager.getBoolean(it1, SharedPrefsConstants.KEY_STUDY_MODE, false)
-                setStudyMode(studyModeState, it1, SharedPrefsConstants.KEY_STUDY_MODE)
+                toggleWallpaperState(wallpaperState, it1, SharedPrefsConstants.KEY_AUTO_WALLPAPER)
             }
         }
     }
 
-    private fun setStudyMode(currentState: Boolean, context: Context, keyName: String) {
-        val background = binding.studyModeWidget.background as? GradientDrawable
-        if(currentState){
-            BasePreferenceManager.putBoolean(context, keyName, false)
-            background?.setColor(ContextCompat.getColor(context, R.color.primaryCardColor))
-            binding.onOffTv.text = "OFF"
-            binding.onOffTv.setTextColor(ContextCompat.getColor(context, R.color.white))
-            binding.studyModeMore.background.setTint(ContextCompat.getColor(context, R.color.secondaryCardColor))
-        }
-        else{
-            BasePreferenceManager.putBoolean(context, keyName, true)
-            background?.setColor(ContextCompat.getColor(context, R.color.white))
-            binding.onOffTv.text = "ON"
-            binding.onOffTv.setTextColor(ContextCompat.getColor(context, R.color.primaryCardColor))
-            binding.studyModeMore.background.setTint(ContextCompat.getColor(context, R.color.black))
-        }
+    private fun toggleWallpaperState(currentState: Boolean, context: Context, keyName: String) {
+        val newState = !currentState
+        BasePreferenceManager.putBoolean(context, keyName, newState)
+        updateWallpaperUI(newState)
+        (activity as MainActivity).setUpWallPaper(newState)
     }
 
-    private fun setAutoWallpaper(currentState: Boolean?, context: Context, keyName: String) {
-        val background = binding.wallpaperWidget.background as? GradientDrawable
-        if (currentState == true) {
-            BasePreferenceManager.putBoolean(context, keyName, false)
-            background?.setColor(ContextCompat.getColor(context, R.color.primaryCardColor))
-            (activity as MainActivity).setUpWallPaper(false)
-        } else {
-            BasePreferenceManager.putBoolean(context, keyName, true)
-            background?.setColor(ContextCompat.getColor(context, R.color.white))
-            (activity as MainActivity).setUpWallPaper(true)
-        }
+    private fun updateWallpaperUI(isEnabled: Boolean) {
+        binding.wallpaperWidget.isSelected = isEnabled
+        val backgroundRes = if (isEnabled) R.drawable.glassmorphism_on else R.drawable.glassmorphism_off
+        binding.wallpaperWidget.setBackgroundResource(backgroundRes)
     }
+
 }
+

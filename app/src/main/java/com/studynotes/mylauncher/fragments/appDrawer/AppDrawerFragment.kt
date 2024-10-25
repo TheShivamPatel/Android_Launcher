@@ -11,6 +11,8 @@ import android.graphics.Shader
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,6 +20,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.studynotes.mylauncher.R
@@ -30,8 +34,13 @@ import com.studynotes.mylauncher.model.AppInfo
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.viewUtils.ViewUtils
+import com.studynotes.mylauncher.viewUtils.ViewUtils.showKeyboard
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer), SelectAppDrawerLayoutBottomSheet.OnLayoutSelectedListener {
+class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
+    SelectAppDrawerLayoutBottomSheet.OnLayoutSelectedListener {
 
     private lateinit var binding: FragmentAppDrawerBinding
     private var adapter: AppDrawerAdapter? = null
@@ -48,10 +57,11 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer), SelectAppDrawe
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         activity?.let {
             ViewUtils.setTransparentNavigationBar(it)
         }
+
+        setUpSearch()
         setUpViews()
         setUpOnClick()
     }
@@ -65,34 +75,94 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer), SelectAppDrawe
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setUpViews() {
         context?.let {
-            val selectedDrawerLayout = BasePreferenceManager.getString(it, SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT,)
+            val selectedDrawerLayout = BasePreferenceManager.getString(
+                it,
+                SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT,
+            )
             setUpRecyclerView(selectedDrawerLayout)
         }
-    }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun setUpRecyclerView(layoutType: String) {
-        context?.let {
-            adapter = AppDrawerAdapter(getInstalledAppList(it), layoutType)
-            if (layoutType == AppDrawerLayout.GRID_LAYOUT.toString()) {
-                binding.appsRv.layoutManager = GridLayoutManager(it, 4)
+        binding.alphabetIndex.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
+                val y = event.y
+                val height = binding.alphabetIndex.height
+                val index = (y / height * 26).toInt()
+                if (index in 0..25) {
+                    val letter = 'A' + index
+                    binding.searchEditText.setText(letter.toString())
+                    scrollToLetter(letter)
+                }
+                true
             } else {
-                binding.appsRv.layoutManager = LinearLayoutManager(it)
+                false
             }
-            binding.appsRv.adapter = adapter
         }
 
+        binding.alphabetIndex.text = getAlphabetsList()
+
+    }
+
+    private fun getAlphabetsList(): String {
+        var textList = ""
+        for (i in 'A'..'Z') {
+            textList += "$i\n"
+        }
+        return textList
+    }
+
+    private fun scrollToLetter(letter: Char) {
+        adapter?.filter?.filter(letter.toString())
+    }
+
+    private fun setUpSearch() {
+
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter?.filter?.filter(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
+    }
+
+
+    private fun setUpRecyclerView(layoutType: String) {
+        context?.let {
+            lifecycleScope.launch {
+                val installedApps = withContext(Dispatchers.IO) { getInstalledAppList(it) }
+                installedApps.sortBy { appInfo: AppInfo -> appInfo.label }
+                adapter = AppDrawerAdapter(installedApps, layoutType)
+
+                binding.appsRv.layoutManager =
+                    if (layoutType == AppDrawerLayout.GRID_LAYOUT.toString()) {
+                        GridLayoutManager(it, 4)
+                    } else {
+                        LinearLayoutManager(it)
+                    }
+                binding.appsRv.adapter = adapter
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getInstalledAppList(context: Context): List<AppInfo> {
-        packageManager = context.packageManager
+    private fun getInstalledAppList(context: Context): MutableList<AppInfo> {
+        val packageManager = context.packageManager
         val intent = Intent(Intent.ACTION_MAIN, null).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)
         }
-        val allApps: List<ResolveInfo> = packageManager?.queryIntentActivities(intent, 0)!!
+        val allApps: List<ResolveInfo> = packageManager.queryIntentActivities(intent, 0)
+
+        val installedApps = mutableListOf<AppInfo>()
 
         for (ri in allApps) {
             val appPackageName = ri.activityInfo.packageName
@@ -102,10 +172,11 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer), SelectAppDrawe
                 icon = ri.activityInfo.loadIcon(packageManager)
             )
             Log.i("AppDrawerFragment", "Social app found: ${app.packageName}")
-            appsList.add(app)
+            installedApps.add(app)
         }
-        return appsList
+        return installedApps
     }
+
 
     override fun onLayoutSelected(layoutType: String) {
         setUpRecyclerView(layoutType)
