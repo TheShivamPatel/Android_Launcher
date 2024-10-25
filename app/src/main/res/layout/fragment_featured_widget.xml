@@ -54,7 +54,16 @@
             android:layout_marginEnd="@dimen/size_25"
             android:layout_weight="1"
             android:background="@drawable/widget_toggle_on_off"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/size_80"
+                android:layout_height="@dimen/size_80"
+                android:src="@drawable/ic_wallpaper"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 

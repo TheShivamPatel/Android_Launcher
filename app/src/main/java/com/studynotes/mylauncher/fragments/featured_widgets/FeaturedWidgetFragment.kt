@@ -42,10 +42,9 @@ class FeaturedWidgetFragment : Fragment(R.layout.fragment_featured_widget) {
     private fun setUpWidgetTile() {
         context?.let {
             val wallpaperState = BasePreferenceManager.getBoolean(it, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
-            toggleWallpaperState(wallpaperState, it ,SharedPrefsConstants.KEY_AUTO_WALLPAPER)
+            updateWallpaperUI(wallpaperState)
         }
     }
-
 
     private fun setUpOnClick() {
         binding.studyModeMore.setOnClickListener {

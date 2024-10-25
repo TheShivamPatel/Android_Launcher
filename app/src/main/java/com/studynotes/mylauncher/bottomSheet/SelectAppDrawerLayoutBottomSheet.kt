@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.studynotes.mylauncher.R
 import com.studynotes.mylauncher.databinding.BottomSheetAppDrawerSettingsBinding
@@ -34,6 +33,13 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
         super.onViewCreated(view, savedInstanceState)
 
         setUpLayoutMode()
+        setUpToolbar()
+    }
+
+    private fun setUpToolbar() {
+        binding.toolbar.toolbarTitle.text = "Select Layout"
+        binding.toolbar.toolbarBackIcon.setOnClickListener { dismiss() }
+        binding.toolbar.toolbarIconMore.visibility = View.GONE
     }
 
 
