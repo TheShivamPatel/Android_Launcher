@@ -6,6 +6,6 @@ data class SpecialApp(
     val icon: Drawable?,
     val label: String?,
     val packageName: String?,
-    var isEnabled: Boolean
+    var isEnabled: Boolean?
 )
 

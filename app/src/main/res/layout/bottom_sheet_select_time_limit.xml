@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_16"
+    android:background="@drawable/rounded_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_16">
+
+        <ImageView
+            android:id="@+id/img_icon"
+            android:layout_width="@dimen/size_28"
+            android:layout_height="@dimen/size_28"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_app_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/size_16"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="App label"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select the time that you intent to spend on this app."
+        android:gravity="center"
+        android:fontFamily="@font/montserrat_light"
+        android:textColor="@color/grey_200"
+        android:layout_marginHorizontal="@dimen/size_16"/>
+
+    <NumberPicker
+        android:id="@+id/time_picker"
+        android:layout_width="@dimen/size_150"
+        android:layout_height="@dimen/size_150"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/size_40"
+        android:layout_marginEnd="@dimen/size_40"
+        android:background="@color/white"
+        android:backgroundTint="@color/primaryCardColor"
+        android:theme="@style/numbersPicker" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            style="@style/headlineMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Cancel"
+            android:paddingTop="@dimen/size_8"
+            android:paddingBottom="@dimen/size_16"
+            android:textColor="@color/white" />
+
+        <View
+            android:layout_width="@dimen/size_1"
+            android:layout_height="@dimen/size_20"
+            android:background="@color/grey_600"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_done"
+            style="@style/headlineMedium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Done"
+            android:paddingTop="@dimen/size_8"
+            android:paddingBottom="@dimen/size_16"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

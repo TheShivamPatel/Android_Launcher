@@ -14,28 +14,22 @@ class SpecialAppAdapter(private val specialAppList: List<SpecialApp>) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SpecialAppViewHolder {
-        val binding = IconSwitchSettingItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            IconSwitchSettingItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return SpecialAppViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SpecialAppViewHolder, position: Int) {
         val app = specialAppList[position]
 
-        with(holder.binding){
+        with(holder.binding) {
             title.text = app.label
             leadingIcon.setImageDrawable(app.icon)
-            swOnOff.isChecked = app.isEnabled
-            swOnOff.setOnCheckedChangeListener { _, isChecked ->
-                app.isEnabled = isChecked
-            }
+
         }
 
     }
 
     override fun getItemCount(): Int = specialAppList.size
-
-    fun getCurrentList(): List<SpecialApp> {
-        return specialAppList
-    }
 
 }

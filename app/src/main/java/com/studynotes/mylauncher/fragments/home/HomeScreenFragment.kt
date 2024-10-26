@@ -1,6 +1,8 @@
 package com.studynotes.mylauncher.fragments.home
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.studynotes.mylauncher.R
+import com.studynotes.mylauncher.activity.specialApps.SpecialAppsActivity
 import com.studynotes.mylauncher.databinding.FragmentHomeScreenBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerAdapter
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
@@ -22,6 +25,8 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
     private lateinit var binding: FragmentHomeScreenBinding
     private var adapter: AppDrawerAdapter? = null
+    private var appsList: MutableList<AppInfo> = mutableListOf()
+    private var packageManager: PackageManager? = null
 
 
     override fun onCreateView(
@@ -37,10 +42,16 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
         setUpViews()
         setUpStatusNavigationBarTheme()
         setUpRecyclerView()
+        setUpOnClick()
     }
 
     private fun setUpStatusNavigationBarTheme() {
         activity?.let { ViewUtils.setTransparentNavigationBar(it) }
+    }
+
+
+    private fun setUpOnClick() {
+        binding.llAddHomeApps.setOnClickListener { startActivity(Intent(context, SpecialAppsActivity::class.java)) }
     }
 
     private fun setUpViews() {
@@ -48,13 +59,34 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     }
 
     private fun setUpRecyclerView() {
-        val storedAppList = getSpecialAppsListFromDB()
-        val homeAppList: List<AppInfo> = storedAppList
         context?.let {
-            adapter = AppDrawerAdapter(homeAppList, AppDrawerLayout.LINEAR_LAYOUT.toString(), it, requireActivity().supportFragmentManager)
+            val storedAppList =  getHomeAppList(it)
+            adapter = AppDrawerAdapter(storedAppList, AppDrawerLayout.LINEAR_LAYOUT.toString(), it, requireActivity().supportFragmentManager)
         }
         binding.recyclerViewHomeApps.adapter = adapter
         binding.recyclerViewHomeApps.layoutManager = LinearLayoutManager(context)
+    }
+
+    private fun getHomeAppList(context: Context): List<AppInfo> {
+        packageManager = context.packageManager
+        val homeApps = listOf(
+            "com.google.android.dialer",
+            "com.google.android.contacts",
+            "com.android.camera",
+            "com.google.android.googlequicksearchbox",
+            "com.whatsapp"
+        )
+        for (packageName in homeApps) {
+            try {
+                val appInfo = packageManager?.getApplicationInfo(packageName, 0)
+                val appName = appInfo?.let { packageManager?.getApplicationLabel(it).toString() }
+                val appIcon = packageManager?.getApplicationIcon(packageName)
+                appsList.add(AppInfo(appName, packageName, appIcon))
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+            }
+        }
+        return appsList
     }
 
     private fun getSpecialAppsListFromDB(): List<AppInfo> {
@@ -73,14 +105,5 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
         }
     }
 
-    private fun updateSpecialAppsListInDB(specialAppList: List<AppInfo>, context: Context) {
-        val gson = Gson()
-        val json = gson.toJson(specialAppList)
-        BasePreferenceManager.putString(
-            context,
-            SharedPrefsConstants.KEY_SELECTED_HOME_APPS,
-            json
-        )
-    }
 
 }

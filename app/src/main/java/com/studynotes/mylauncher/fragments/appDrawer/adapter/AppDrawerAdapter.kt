@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.studynotes.mylauncher.bottomSheet.AppSettingsBottomSheet
 import com.studynotes.mylauncher.bottomSheet.SelectAppDrawerLayoutBottomSheet
+import com.studynotes.mylauncher.bottomSheet.SelectTimeLimitBottomSheet
 import com.studynotes.mylauncher.databinding.IconTitleItemLayoutBinding
 import com.studynotes.mylauncher.databinding.ItemAppIconBinding
 import com.studynotes.mylauncher.model.AppInfo
@@ -29,12 +30,8 @@ class AppDrawerAdapter(
             binding.tvAppLabel.text = appInfo.label
             binding.imgIcon.setImageDrawable(appInfo.icon)
             binding.root.setOnClickListener {
-                val launchIntent = appInfo.packageName?.let { it1 ->
-                    binding.root.context.packageManager.getLaunchIntentForPackage(
-                        it1
-                    )
-                }
-                launchIntent?.let { binding.root.context.startActivity(it) }
+                SelectTimeLimitBottomSheet(appInfo).show(fragmentManager, "SelectUsageTimeLimit")
+
             }
 
             binding.root.setOnLongClickListener {

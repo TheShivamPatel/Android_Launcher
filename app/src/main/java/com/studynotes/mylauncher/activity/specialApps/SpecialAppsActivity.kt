@@ -4,10 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.graphics.Color
-import android.graphics.RenderEffect
-import android.graphics.Shader
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,13 +11,15 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.studynotes.mylauncher.R
 import com.studynotes.mylauncher.activity.specialApps.adapter.SpecialAppAdapter
 import com.studynotes.mylauncher.activity.specialApps.model.SpecialApp
 import com.studynotes.mylauncher.databinding.ActivitySpecialAppsBinding
-import com.studynotes.mylauncher.model.AppInfo
+import com.studynotes.mylauncher.prefs.BasePreferenceManager
+import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import com.studynotes.mylauncher.viewUtils.ViewUtils.setStatusBarColor
 
@@ -39,7 +37,6 @@ class SpecialAppsActivity : AppCompatActivity() {
         setUpStatusBar()
         setUpToolbar()
         setUpViews()
-        applyGlassorphismEffect()
     }
 
     private fun setUpViews() {
@@ -51,7 +48,6 @@ class SpecialAppsActivity : AppCompatActivity() {
         binding.recyclerViewSpecialApps.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewSpecialApps.adapter = adapter
     }
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getInstalledAppList(context: Context): List<SpecialApp> {
@@ -74,7 +70,6 @@ class SpecialAppsActivity : AppCompatActivity() {
         return appsList
     }
 
-
     private fun setUpToolbar() {
         binding.toolbar.toolbarBackIcon.setOnClickListener {
             finish()
@@ -91,23 +86,5 @@ class SpecialAppsActivity : AppCompatActivity() {
         )
     }
 
-    private fun applyGlassorphismEffect() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val blurEffect = RenderEffect.createBlurEffect(20f, 20f, Shader.TileMode.CLAMP)
-            binding.blurBgLayout.setRenderEffect(blurEffect)
-
-            val gradientDrawable = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(Color.argb(150, 0, 0, 0), Color.argb(200, 0, 0, 0))
-            )
-            binding.blurBgLayout.background = gradientDrawable
-        } else {
-            val gradientDrawable = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(Color.argb(120, 0, 0, 0), Color.argb(120, 50, 50, 50))
-            )
-            binding.blurBgLayout.background = gradientDrawable
-        }
-    }
 
 }

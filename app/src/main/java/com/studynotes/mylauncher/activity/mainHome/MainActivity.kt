@@ -1,6 +1,7 @@
 package com.studynotes.mylauncher.activity.mainHome
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setUpWallPaper(wallpaperState: Boolean) {
+        Log.d("zzz", wallpaperState.toString())
         if (wallpaperState) {
             val currentTime = getCurrentTime()
 
@@ -82,8 +84,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        setUpWallPaper(wallpaperState)
-    }
 }

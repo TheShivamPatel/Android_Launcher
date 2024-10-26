@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -47,6 +48,11 @@ class FeaturedWidgetFragment : Fragment(R.layout.fragment_featured_widget) {
     }
 
     private fun setUpOnClick() {
+
+        binding.callenderWidget.setOnClickListener {
+            startActivity(Intent(Settings.ACTION_HOME_SETTINGS))
+        }
+
         binding.studyModeMore.setOnClickListener {
             startActivity(Intent(context, SpecialAppsActivity::class.java))
         }
