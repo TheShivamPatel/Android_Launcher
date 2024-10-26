@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.studynotes.mylauncher.bottomSheet.AppSettingsBottomSheet
 import com.studynotes.mylauncher.bottomSheet.SelectAppDrawerLayoutBottomSheet
-import com.studynotes.mylauncher.bottomSheet.SelectTimeLimitBottomSheet
+import com.studynotes.mylauncher.bottomSheet.SelectTimeLimitDialog
 import com.studynotes.mylauncher.databinding.IconTitleItemLayoutBinding
 import com.studynotes.mylauncher.databinding.ItemAppIconBinding
 import com.studynotes.mylauncher.model.AppInfo
@@ -18,9 +18,10 @@ import com.studynotes.mylauncher.viewUtils.ViewUtils
 class AppDrawerAdapter(
     private val appList: List<AppInfo>,
     private val layoutType: String,
-    private val context : Context,
+    private val context: Context,
     private val fragmentManager: FragmentManager
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable, SelectAppDrawerLayoutBottomSheet.OnLayoutSelectedListener {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable,
+    SelectAppDrawerLayoutBottomSheet.OnLayoutSelectedListener {
 
     private var appListFiltered: List<AppInfo> = appList
 
@@ -30,8 +31,10 @@ class AppDrawerAdapter(
             binding.tvAppLabel.text = appInfo.label
             binding.imgIcon.setImageDrawable(appInfo.icon)
             binding.root.setOnClickListener {
-                SelectTimeLimitBottomSheet(appInfo).show(fragmentManager, "SelectUsageTimeLimit")
-
+                SelectTimeLimitDialog(
+                    SelectTimeLimitDialog.Companion.DialogType.TYPE_SELECT_TIME_LIMIT,
+                    appInfo
+                ).show(fragmentManager, SelectTimeLimitDialog.TAG)
             }
 
             binding.root.setOnLongClickListener {
@@ -133,8 +136,8 @@ class AppDrawerAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(isHeader(position)) TYPE_HEADER else TYPE_ITEM
-     }
+        return if (isHeader(position)) TYPE_HEADER else TYPE_ITEM
+    }
 
     private fun isHeader(position: Int): Boolean {
         if (position == 0) return true

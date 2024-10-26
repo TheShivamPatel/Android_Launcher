@@ -1,6 +1,10 @@
 package com.studynotes.mylauncher.activity.mainHome
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -31,7 +35,22 @@ class MainActivity : AppCompatActivity() {
         setUpStatusBar()
         setUpViews()
         setUpStatusBar()
+        requestOverlayPermission()
+
     }
+
+    fun requestOverlayPermission() {
+        if (!Settings.canDrawOverlays(this)) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:${this.packageName}")
+            )
+            this.startActivity(intent)
+        }else{
+            ViewUtils.showToast(this, "All Set!")
+        }
+    }
+
 
     private fun setUpViews() {
         setUpViewPager()
