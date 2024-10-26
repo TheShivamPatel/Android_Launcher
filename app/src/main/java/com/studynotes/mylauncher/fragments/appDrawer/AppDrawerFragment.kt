@@ -41,11 +41,8 @@ import kotlinx.coroutines.withContext
 
 class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
     SelectAppDrawerLayoutBottomSheet.OnLayoutSelectedListener {
-
     private lateinit var binding: FragmentAppDrawerBinding
     private var adapter: AppDrawerAdapter? = null
-    private var packageManager: PackageManager? = null
-    private var appsList: MutableList<AppInfo> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,11 +52,10 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.let {
-            ViewUtils.setTransparentNavigationBar(it)
-        }
+        activity?.let { ViewUtils.setTransparentNavigationBar(it) }
 
         setUpSearch()
         setUpViews()
@@ -68,13 +64,16 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
 
     private fun setUpOnClick() {
         binding.settingBtn.setOnClickListener {
-            SelectAppDrawerLayoutBottomSheet(this).show(
-                requireActivity().supportFragmentManager,
-                "AppDrawerBottomSheet"
-            )
+            activity?.let {
+                SelectAppDrawerLayoutBottomSheet(this).show(
+                    it.supportFragmentManager,
+                    "AppDrawerBottomSheet"
+                )
+            }
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("ClickableViewAccessibility")
     private fun setUpViews() {
         context?.let {
@@ -136,12 +135,13 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setUpRecyclerView(layoutType: String) {
         context?.let {
             lifecycleScope.launch {
                 val installedApps = withContext(Dispatchers.IO) { getInstalledAppList(it) }
                 installedApps.sortBy { appInfo: AppInfo -> appInfo.label }
-                adapter = AppDrawerAdapter(installedApps, layoutType)
+                adapter = AppDrawerAdapter(installedApps, layoutType, it, requireActivity().supportFragmentManager)
 
                 binding.appsRv.layoutManager =
                     if (layoutType == AppDrawerLayout.GRID_LAYOUT.toString()) {
@@ -178,6 +178,7 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onLayoutSelected(layoutType: String) {
         setUpRecyclerView(layoutType)
     }

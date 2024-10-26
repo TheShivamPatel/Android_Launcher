@@ -1,18 +1,25 @@
 package com.studynotes.mylauncher.fragments.appDrawer.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
+import com.studynotes.mylauncher.bottomSheet.AppSettingsBottomSheet
+import com.studynotes.mylauncher.bottomSheet.SelectAppDrawerLayoutBottomSheet
 import com.studynotes.mylauncher.databinding.IconTitleItemLayoutBinding
 import com.studynotes.mylauncher.databinding.ItemAppIconBinding
 import com.studynotes.mylauncher.model.AppInfo
+import com.studynotes.mylauncher.viewUtils.ViewUtils
 
 class AppDrawerAdapter(
     private val appList: List<AppInfo>,
-    private val layoutType: String
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
+    private val layoutType: String,
+    private val context : Context,
+    private val fragmentManager: FragmentManager
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable, SelectAppDrawerLayoutBottomSheet.OnLayoutSelectedListener {
 
     private var appListFiltered: List<AppInfo> = appList
 
@@ -29,6 +36,15 @@ class AppDrawerAdapter(
                 }
                 launchIntent?.let { binding.root.context.startActivity(it) }
             }
+
+            binding.root.setOnLongClickListener {
+                AppSettingsBottomSheet(appInfo).show(
+                    fragmentManager,
+                    "AppDrawerBottomSheet"
+                )
+                return@setOnLongClickListener true
+            }
+
         }
     }
 
@@ -45,6 +61,14 @@ class AppDrawerAdapter(
                     )
                 }
                 launchIntent?.let { binding.root.context.startActivity(it) }
+            }
+
+            binding.root.setOnLongClickListener {
+                AppSettingsBottomSheet(appInfo).show(
+                    fragmentManager,
+                    "AppDrawerBottomSheet"
+                )
+                return@setOnLongClickListener true
             }
         }
     }
@@ -120,6 +144,10 @@ class AppDrawerAdapter(
         val currentLabel = appListFiltered[position].label?.get(0)
         val previousLabel = appListFiltered[position - 1].label?.get(0)
         return currentLabel != previousLabel
+    }
+
+    override fun onLayoutSelected(layoutType: String) {
+        ViewUtils.showToast(context = context, "$layoutType Selected")
     }
 
 

@@ -18,7 +18,7 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
         fun onLayoutSelected(layoutType: String)
     }
 
-    lateinit var binding: BottomSheetAppDrawerSettingsBinding
+    private lateinit var binding: BottomSheetAppDrawerSettingsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,

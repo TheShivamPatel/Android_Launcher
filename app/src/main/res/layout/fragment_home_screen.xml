@@ -10,13 +10,12 @@
         android:id="@+id/tv_clock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_20"
         android:layout_marginTop="@dimen/size_100"
-        android:fontFamily="@font/montserrat_bold"
+        android:fontFamily="@font/montserrat_semibold"
         android:text="12:59"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,12 +24,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_8"
-        android:fontFamily="@font/montserrat_semibold"
+        android:fontFamily="@font/montserrat_medium"
         android:text="Sun, 20 October 26°C"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_20"
-        app:layout_constraintEnd_toEndOf="@+id/tv_clock"
         app:layout_constraintStart_toStartOf="@+id/tv_clock"
         app:layout_constraintTop_toBottomOf="@+id/tv_clock" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewHomeApps"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
