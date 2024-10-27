@@ -42,7 +42,7 @@ class SelectTimeLimitDialog(private val dialogType: DialogType, private val appI
             DialogType.TYPE_SELECT_TIME_LIMIT.toString() -> {
                 binding.timePicker.visibility = View.VISIBLE
                 binding.tvDone.setOnClickListener {
-                    val selectedTime = intervals[binding.timePicker.value].toInt() * 60 * 1000 // in ms
+                    val selectedTime = intervals[binding.timePicker.value].toInt() * 1000 // in ms
                     startBackgroundService(selectedTime.toLong())
                     dismiss()
                     launchApp(appInfo)

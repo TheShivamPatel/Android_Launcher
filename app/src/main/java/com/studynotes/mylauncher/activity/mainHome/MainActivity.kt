@@ -1,5 +1,6 @@
 package com.studynotes.mylauncher.activity.mainHome
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -102,5 +103,15 @@ class MainActivity : AppCompatActivity() {
             else -> TimeBase.NIGHT
         }
     }
+
+
+    @SuppressLint("MissingSuperCall")
+    override fun onBackPressed() {
+        val defaultPageIndex = 1
+        if (binding.viewPager.currentItem != defaultPageIndex) {
+            binding.viewPager.setCurrentItem(defaultPageIndex, true)
+        }
+    }
+
 
 }
