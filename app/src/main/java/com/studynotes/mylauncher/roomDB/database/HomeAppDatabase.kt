@@ -18,9 +18,9 @@ abstract class HomeAppDatabase : RoomDatabase() {
     companion object {
 
         @Volatile
-        private var INSTANCE: RoomDatabase? = null
+        private var INSTANCE: HomeAppDatabase? = null
 
-        fun getDatabase(context: Context): RoomDatabase {
+        fun getDatabase(context: Context): HomeAppDatabase {
             if (INSTANCE == null) {
                 synchronized(this) {
                     INSTANCE = Room.databaseBuilder(
