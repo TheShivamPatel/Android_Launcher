@@ -1,25 +1,37 @@
 package com.studynotes.mylauncher.fragments.home
 
+import android.app.ActivityManager
+import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.studynotes.mylauncher.R
-import com.studynotes.mylauncher.activity.specialApps.SpecialAppsActivity
+import com.studynotes.mylauncher.specialApps.SpecialAppsActivity
 import com.studynotes.mylauncher.databinding.FragmentHomeScreenBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerAdapter
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
-import com.studynotes.mylauncher.model.AppInfo
+import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
+import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
+import com.studynotes.mylauncher.roomDB.Model.HomeApp
+import com.studynotes.mylauncher.roomDB.database.HomeAppDatabase
 import com.studynotes.mylauncher.viewUtils.ViewUtils
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
@@ -27,6 +39,8 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     private var adapter: AppDrawerAdapter? = null
     private var appsList: MutableList<AppInfo> = mutableListOf()
     private var packageManager: PackageManager? = null
+    private lateinit var database : HomeAppDatabase
+    private lateinit var homeAppDao: HomeAppDao
 
 
     override fun onCreateView(
@@ -41,8 +55,17 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
         super.onViewCreated(view, savedInstanceState)
         setUpViews()
         setUpStatusNavigationBarTheme()
+        setUpRoomDB()
         setUpRecyclerView()
         setUpOnClick()
+    }
+
+    private fun setUpRoomDB(){
+        // INSTANCE CREATION
+        context?.let {
+            database = HomeAppDatabase.getDatabase(it) as HomeAppDatabase
+            homeAppDao = database.homeAppDao()!!
+        }
     }
 
     private fun setUpStatusNavigationBarTheme() {

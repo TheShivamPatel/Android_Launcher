@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.studynotes.mylauncher.databinding.DialogSelectTimeLimitBinding
-import com.studynotes.mylauncher.model.AppInfo
+import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.services.SpendTimeLimitService
 
 class SelectTimeLimitDialog(private val dialogType: DialogType, private val appInfo: AppInfo) : DialogFragment() {
@@ -42,7 +42,7 @@ class SelectTimeLimitDialog(private val dialogType: DialogType, private val appI
             DialogType.TYPE_SELECT_TIME_LIMIT.toString() -> {
                 binding.timePicker.visibility = View.VISIBLE
                 binding.tvDone.setOnClickListener {
-                    val selectedTime = intervals[binding.timePicker.value].toInt() * 1000 // in ms
+                    val selectedTime = intervals[binding.timePicker.value].toInt() * 60 * 1000 // in ms
                     startBackgroundService(selectedTime.toLong())
                     dismiss()
                     launchApp(appInfo)

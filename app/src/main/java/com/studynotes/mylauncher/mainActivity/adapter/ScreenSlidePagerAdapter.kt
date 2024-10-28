@@ -1,4 +1,4 @@
-package com.studynotes.mylauncher.adapter
+package com.studynotes.mylauncher.mainActivity.adapter
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

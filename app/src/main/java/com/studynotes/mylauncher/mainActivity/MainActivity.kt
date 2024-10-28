@@ -1,25 +1,21 @@
-package com.studynotes.mylauncher.activity.mainHome
+package com.studynotes.mylauncher.mainActivity
 
 import android.annotation.SuppressLint
+import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.studynotes.mylauncher.R
-import com.studynotes.mylauncher.adapter.ScreenSlidePagerAdapter
-import com.studynotes.mylauncher.adapter.VerticalSlidePagerAdapter
+import com.studynotes.mylauncher.mainActivity.adapter.ScreenSlidePagerAdapter
 import com.studynotes.mylauncher.databinding.ActivityMainBinding
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.viewUtils.FadePageTransformer
-import com.studynotes.mylauncher.viewUtils.VerticalPageTransformer
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import java.util.Calendar
 
@@ -27,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private var pagerAdapter: ScreenSlidePagerAdapter? = null
-    private var wallpaperState : Boolean= false
+    private var wallpaperState: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,31 +32,44 @@ class MainActivity : AppCompatActivity() {
         setUpStatusBar()
         setUpViews()
         setUpStatusBar()
-        requestOverlayPermission()
-
+        checkPermission()
     }
 
-    fun requestOverlayPermission() {
+
+    private fun checkPermission() {
         if (!Settings.canDrawOverlays(this)) {
             val intent = Intent(
                 Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                 Uri.parse("package:${this.packageName}")
             )
             this.startActivity(intent)
-        }else{
+        } else if (!hasUsageStatsPermission()) {
+            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            startActivity(intent)
+
+        } else {
             ViewUtils.showToast(this, "All Set!")
         }
     }
 
+    private fun hasUsageStatsPermission(): Boolean {
+        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = appOps.checkOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            android.os.Process.myUid(),
+            packageName
+        )
+        return mode == AppOpsManager.MODE_ALLOWED
+    }
 
     private fun setUpViews() {
         setUpViewPager()
-        wallpaperState = BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
+        wallpaperState =
+            BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
         setUpWallPaper(wallpaperState)
     }
 
     fun setUpWallPaper(wallpaperState: Boolean) {
-        Log.d("zzz", wallpaperState.toString())
         if (wallpaperState) {
             val currentTime = getCurrentTime()
 
@@ -70,7 +79,12 @@ class MainActivity : AppCompatActivity() {
                 TimeBase.NIGHT -> R.drawable.bg_3
             }
 
-            binding.mainWallpaper.setImageDrawable(ContextCompat.getDrawable(this, wallpaperResource))
+            binding.mainWallpaper.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    wallpaperResource
+                )
+            )
             binding.mainWallpaper.visibility = View.VISIBLE
         } else {
             binding.mainWallpaper.visibility = View.GONE
@@ -91,7 +105,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    enum class TimeBase{
+    enum class TimeBase {
         MORNING, EVENING, NIGHT
     }
 
@@ -104,7 +118,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         val defaultPageIndex = 1
@@ -112,6 +125,4 @@ class MainActivity : AppCompatActivity() {
             binding.viewPager.setCurrentItem(defaultPageIndex, true)
         }
     }
-
-
 }

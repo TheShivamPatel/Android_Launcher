@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.studynotes.mylauncher.databinding.BottomSheetAppSettingsBinding
-import com.studynotes.mylauncher.model.AppInfo
+import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.viewUtils.ViewUtils

@@ -1,9 +1,9 @@
-package com.studynotes.mylauncher.activity.specialApps.adapter
+package com.studynotes.mylauncher.specialApps.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.studynotes.mylauncher.activity.specialApps.model.SpecialApp
+import com.studynotes.mylauncher.specialApps.model.SpecialApp
 import com.studynotes.mylauncher.databinding.IconSwitchSettingItemBinding
 
 

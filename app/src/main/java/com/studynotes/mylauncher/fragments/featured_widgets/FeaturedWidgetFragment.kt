@@ -2,18 +2,15 @@ package com.studynotes.mylauncher.fragments.featured_widgets
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.provider.Settings
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.studynotes.mylauncher.R
-import com.studynotes.mylauncher.activity.mainHome.MainActivity
-import com.studynotes.mylauncher.activity.specialApps.SpecialAppsActivity
-import com.studynotes.mylauncher.activity.specialApps.adapter.SpecialAppAdapter
+import com.studynotes.mylauncher.mainActivity.MainActivity
+import com.studynotes.mylauncher.specialApps.SpecialAppsActivity
 import com.studynotes.mylauncher.databinding.FragmentFeaturedWidgetBinding
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants

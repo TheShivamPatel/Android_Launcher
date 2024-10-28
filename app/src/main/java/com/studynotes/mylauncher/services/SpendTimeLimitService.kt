@@ -1,6 +1,11 @@
 package com.studynotes.mylauncher.services
 
+import android.annotation.SuppressLint
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
@@ -13,8 +18,10 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import com.studynotes.mylauncher.R
-import com.studynotes.mylauncher.activity.mainHome.MainActivity
+import com.studynotes.mylauncher.mainActivity.MainActivity
 import com.studynotes.mylauncher.databinding.DialogSelectTimeLimitBinding
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 
@@ -26,23 +33,49 @@ class SpendTimeLimitService : Service() {
     private lateinit var handlerThread: HandlerThread
     private lateinit var handler: Handler
 
+    private val notification_channel = "flash_alert_channel"
+    private var notification: Notification? = null
+    private var notificationManager: NotificationManager? = null
+
+
+    companion object {
+        private const val CHANNEL_ID = "TimeLimitServiceChannel"
+        private const val NOTIFICATION_ID = 1
+    }
+
     override fun onCreate() {
         super.onCreate()
+
         handlerThread = HandlerThread("OverlayHandlerThread")
         handlerThread.start()
         handler = Handler(handlerThread.looper)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setUpNotificationChannel()
+        }
+        setUpNotification()
     }
+
+
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
+    @SuppressLint("ForegroundServiceType")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("zzz", "Service Started")
         val duration = intent?.getLongExtra("EXTRA_DURATION", 5000L) ?: 5000L
+
+        // Start as a foreground service
+        startForeground(NOTIFICATION_ID, notification)
+
+        // Perform the long task
         performLongTask(duration)
+
         return START_STICKY
     }
+
 
     private fun performLongTask(duration: Long) {
         handler.postDelayed({
@@ -121,4 +154,25 @@ class SpendTimeLimitService : Service() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setUpNotificationChannel() {
+        val channel = NotificationChannel(
+            notification_channel,
+            "Foreground",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager?.createNotificationChannel(channel)
+    }
+
+    private fun setUpNotification() {
+        val buildNotification = NotificationCompat.Builder(this, notification_channel)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("Flash Alert")
+            .setContentText("Smart Notification Assistant...")
+            .setOngoing(true)
+        notification = buildNotification.build()
+    }
+
 }
+

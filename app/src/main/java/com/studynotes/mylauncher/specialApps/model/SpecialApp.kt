@@ -1,4 +1,4 @@
-package com.studynotes.mylauncher.activity.specialApps.model
+package com.studynotes.mylauncher.specialApps.model
 
 import android.graphics.drawable.Drawable
 

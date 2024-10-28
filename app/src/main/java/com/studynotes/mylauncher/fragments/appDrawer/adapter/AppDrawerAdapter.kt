@@ -12,7 +12,7 @@ import com.studynotes.mylauncher.bottomSheet.SelectAppDrawerLayoutBottomSheet
 import com.studynotes.mylauncher.bottomSheet.SelectTimeLimitDialog
 import com.studynotes.mylauncher.databinding.IconTitleItemLayoutBinding
 import com.studynotes.mylauncher.databinding.ItemAppIconBinding
-import com.studynotes.mylauncher.model.AppInfo
+import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 
 class AppDrawerAdapter(

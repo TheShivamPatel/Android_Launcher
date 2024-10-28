@@ -1,4 +1,4 @@
-package com.studynotes.mylauncher.model
+package com.studynotes.mylauncher.fragments.appDrawer.model
 import android.graphics.drawable.Drawable
 import java.io.Serializable
 

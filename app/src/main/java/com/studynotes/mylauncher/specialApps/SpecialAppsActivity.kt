@@ -1,4 +1,4 @@
-package com.studynotes.mylauncher.activity.specialApps
+package com.studynotes.mylauncher.specialApps
 
 import android.content.Context
 import android.content.Intent
@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.studynotes.mylauncher.R
-import com.studynotes.mylauncher.activity.specialApps.adapter.SpecialAppAdapter
-import com.studynotes.mylauncher.activity.specialApps.model.SpecialApp
+import com.studynotes.mylauncher.specialApps.adapter.SpecialAppAdapter
+import com.studynotes.mylauncher.specialApps.model.SpecialApp
 import com.studynotes.mylauncher.databinding.ActivitySpecialAppsBinding
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
