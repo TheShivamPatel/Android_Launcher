@@ -9,7 +9,7 @@
     <style name="numbersPicker" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/grey_600</item>
         <item name="background">@drawable/vertical_face_bg</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimary">@color/black</item>
         <item name="fontFamily">@font/montserrat_medium</item>
         <item name="android:textSize">@dimen/text_size_16</item>
     </style>

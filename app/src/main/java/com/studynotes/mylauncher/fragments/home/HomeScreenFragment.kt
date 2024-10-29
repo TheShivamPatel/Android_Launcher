@@ -1,9 +1,15 @@
 package com.studynotes.mylauncher.fragments.home
 
+import android.app.usage.UsageEvents
+import android.app.usage.UsageStatsManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +33,9 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     private var appsList: MutableList<AppInfo> = mutableListOf()
     private var homeAppDao: HomeAppDao? = null
     private lateinit var restrictedAppDao: RestrictedAppDao
+
+    private val handler = Handler(Looper.getMainLooper())
+    private val interval: Long = 5000
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,8 +73,12 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
                 )
             )
         }
-    }
 
+        binding.tvClock.setOnClickListener {
+
+        }
+
+    }
 
     private fun setUpRecyclerView() {
         binding.recyclerViewHomeApps.layoutManager = LinearLayoutManager(context)

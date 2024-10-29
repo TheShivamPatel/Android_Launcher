@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_bg"
+    android:backgroundTint="@color/white"
     android:orientation="vertical"
     android:paddingBottom="@dimen/size_36">
 
@@ -28,7 +29,7 @@
             android:layout_weight="1"
             android:fontFamily="@font/montserrat_semibold"
             android:text="App label"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/text_size_20" />
 
         <ImageView

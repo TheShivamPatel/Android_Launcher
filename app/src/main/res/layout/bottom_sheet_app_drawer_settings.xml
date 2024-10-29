@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_2" />
 
-
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
@@ -31,7 +30,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/size_16"
             android:text="Simple List"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
         <com.google.android.material.radiobutton.MaterialRadioButton
             android:id="@+id/gridListRadioButton"
@@ -40,7 +39,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/size_16"
             android:text="Grid List"
-            android:textColor="@color/white" />
+            android:textColor="@color/black" />
 
     </RadioGroup>
 

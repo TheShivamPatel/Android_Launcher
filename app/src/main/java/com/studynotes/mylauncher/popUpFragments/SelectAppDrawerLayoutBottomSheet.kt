@@ -53,7 +53,7 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
             )) {
                 AppDrawerLayout.LINEAR_LAYOUT.toString() -> binding.simpleListRadioButton.isChecked = true
                 AppDrawerLayout.GRID_LAYOUT.toString() -> binding.gridListRadioButton.isChecked = true
-                else -> binding.gridListRadioButton.isChecked = true
+                else -> binding.simpleListRadioButton.isChecked = true
             }
 
             binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
@@ -81,19 +81,5 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
             }
 
         }
-
     }
-
-    override fun onStart() {
-        super.onStart()
-        val bottomSheet =
-            dialog?.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-        bottomSheet?.let { sheet ->
-            val layoutParams = sheet.layoutParams as ViewGroup.MarginLayoutParams
-            layoutParams.setMargins(20, 0, 20, 20)
-            sheet.layoutParams = layoutParams
-        }
-    }
-
-
 }
