@@ -16,7 +16,7 @@ import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerAdapter
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
 import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
-import com.studynotes.mylauncher.roomDB.database.HomeAppDatabase
+import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
@@ -45,7 +45,7 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
     private fun setUpDatabase() {
         context?.let {
-            homeAppDao = HomeAppDatabase.getDatabase(it).homeAppDao()
+            homeAppDao = LauncherDatabase.getDatabase(it).homeAppDao()
         }
     }
 

@@ -10,14 +10,13 @@ import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.room.Room
 import com.studynotes.mylauncher.R
 import com.studynotes.mylauncher.mainActivity.adapter.ScreenSlidePagerAdapter
 import com.studynotes.mylauncher.databinding.ActivityMainBinding
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
-import com.studynotes.mylauncher.roomDB.database.HomeAppDatabase
+import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
 import com.studynotes.mylauncher.viewUtils.FadePageTransformer
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import java.util.Calendar
@@ -27,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var pagerAdapter: ScreenSlidePagerAdapter? = null
     private var wallpaperState: Boolean = false
-    private var database: HomeAppDatabase? = null
+    private var database: LauncherDatabase? = null
     private var homeAppDao : HomeAppDao? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpRoomDB() {
-        database = HomeAppDatabase.getDatabase(this)
+        database = LauncherDatabase.getDatabase(this)
         homeAppDao = database?.homeAppDao()
     }
 

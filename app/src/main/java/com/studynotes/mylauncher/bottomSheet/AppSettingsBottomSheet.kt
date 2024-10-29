@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,7 @@ import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
 import com.studynotes.mylauncher.roomDB.Model.HomeApp
 import com.studynotes.mylauncher.roomDB.convertors.Convertors
-import com.studynotes.mylauncher.roomDB.database.HomeAppDatabase
+import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +42,7 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let { ViewUtils.setTransparentNavigationBar(it) }
-        homeAppDao = HomeAppDatabase.getDatabase(requireContext()).homeAppDao()
+        homeAppDao = LauncherDatabase.getDatabase(requireContext()).homeAppDao()
         setUpViews()
         setUpOnClick()
     }
