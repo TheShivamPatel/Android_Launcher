@@ -1,7 +1,6 @@
 package com.studynotes.mylauncher.fragments.home
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
@@ -65,24 +64,29 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
         }
     }
 
+
     private fun setUpRecyclerView() {
         binding.recyclerViewHomeApps.layoutManager = LinearLayoutManager(context)
 
         homeAppDao?.getAllHomeApps()?.observe(viewLifecycleOwner) { homeApps ->
             appsList = homeApps.map { homeApp ->
                 AppInfo(homeApp.label, homeApp.packageName, homeApp.iconData?.let { iconData ->
-                    BitmapDrawable(resources, BitmapFactory.decodeByteArray(iconData, 0, iconData.size))
+                    BitmapDrawable(
+                        resources,
+                        BitmapFactory.decodeByteArray(iconData, 0, iconData.size)
+                    )
                 })
             }.toMutableList()
+
+            context?.let {
+                adapter = AppDrawerAdapter(
+                    appsList.toList(),
+                    AppDrawerLayout.LINEAR_LAYOUT.toString(),
+                    it,
+                    requireActivity().supportFragmentManager
+                )
+            }
+            binding.recyclerViewHomeApps.adapter = adapter
         }
-        context?.let {
-            adapter = AppDrawerAdapter(
-                appsList,
-                AppDrawerLayout.LINEAR_LAYOUT.toString(),
-                it,
-                requireActivity().supportFragmentManager
-            )
-        }
-        binding.recyclerViewHomeApps.adapter = adapter
     }
 }

@@ -103,7 +103,6 @@ class SelectTimeLimitDialog(private val dialogType: DialogType, private val appI
         enum class DialogType {
             TYPE_SELECT_TIME_LIMIT, TYPE_EXTEND_TIME_LIMIT
         }
-
     }
 
 }

@@ -51,6 +51,7 @@
         android:background="@drawable/widget_card_bg"
         android:backgroundTint="@color/secondaryCardColor"
         android:gravity="center"
+        android:visibility="gone"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/size_16"
         android:paddingVertical="@dimen/size_4"

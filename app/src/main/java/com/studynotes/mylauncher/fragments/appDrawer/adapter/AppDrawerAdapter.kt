@@ -29,6 +29,7 @@ class AppDrawerAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(appInfo: AppInfo) {
             binding.tvAppLabel.text = appInfo.label
+
             binding.imgIcon.setImageDrawable(appInfo.icon)
             binding.root.setOnClickListener {
                 SelectTimeLimitDialog(
@@ -149,7 +150,6 @@ class AppDrawerAdapter(
     override fun onLayoutSelected(layoutType: String) {
         ViewUtils.showToast(context = context, "$layoutType Selected")
     }
-
 
 }
 
