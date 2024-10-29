@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private var pagerAdapter: ScreenSlidePagerAdapter? = null
     private var wallpaperState: Boolean = false
     private var database: LauncherDatabase? = null
-    private var homeAppDao : HomeAppDao? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +41,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpRoomDB() {
         database = LauncherDatabase.getDatabase(this)
-        homeAppDao = database?.homeAppDao()
     }
 
 

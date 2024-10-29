@@ -16,6 +16,7 @@ import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerAdapter
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
 import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
+import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
 import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 
@@ -25,7 +26,7 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     private var adapter: AppDrawerAdapter? = null
     private var appsList: MutableList<AppInfo> = mutableListOf()
     private var homeAppDao: HomeAppDao? = null
-
+    private lateinit var restrictedAppDao: RestrictedAppDao
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +47,7 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     private fun setUpDatabase() {
         context?.let {
             homeAppDao = LauncherDatabase.getDatabase(it).homeAppDao()
+            restrictedAppDao = LauncherDatabase.getDatabase(it).restrictedAppsDao()
         }
     }
 
@@ -83,7 +85,8 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
                     appsList.toList(),
                     AppDrawerLayout.LINEAR_LAYOUT.toString(),
                     it,
-                    requireActivity().supportFragmentManager
+                    requireActivity().supportFragmentManager,
+                    restrictedAppDao
                 )
             }
             binding.recyclerViewHomeApps.adapter = adapter

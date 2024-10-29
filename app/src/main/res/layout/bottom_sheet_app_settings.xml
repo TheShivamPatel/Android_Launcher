@@ -48,6 +48,15 @@
         android:layout_marginHorizontal="@dimen/size_20"
         android:layout_marginTop="@dimen/size_20"/>
 
+
+    <include
+        android:id="@+id/option_time_limit"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/leading_icon_with_title_dialog_item"
+        android:layout_marginHorizontal="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_20"/>
+
     <include
         android:id="@+id/option_app_info"
         android:layout_height="wrap_content"

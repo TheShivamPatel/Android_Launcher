@@ -19,13 +19,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.studynotes.mylauncher.R
-import com.studynotes.mylauncher.bottomSheet.SelectAppDrawerLayoutBottomSheet
+import com.studynotes.mylauncher.popUpFragments.SelectAppDrawerLayoutBottomSheet
 import com.studynotes.mylauncher.databinding.FragmentAppDrawerBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerAdapter
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
 import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
+import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
+import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +37,7 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
     SelectAppDrawerLayoutBottomSheet.OnLayoutSelectedListener {
     private lateinit var binding: FragmentAppDrawerBinding
     private var adapter: AppDrawerAdapter? = null
+    private lateinit var restrictedAppDao: RestrictedAppDao
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +51,7 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let { ViewUtils.setTransparentNavigationBar(it) }
-
+        context?.let { restrictedAppDao = LauncherDatabase.getDatabase(it).restrictedAppsDao() }
         setUpSearch()
         setUpViews()
         setUpOnClick()
@@ -133,7 +136,7 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
             lifecycleScope.launch {
                 val installedApps = withContext(Dispatchers.IO) { getInstalledAppList(it) }
                 installedApps.sortBy { appInfo: AppInfo -> appInfo.label }
-                adapter = AppDrawerAdapter(installedApps, layoutType, it, requireActivity().supportFragmentManager)
+                adapter = AppDrawerAdapter(installedApps, layoutType, it, requireActivity().supportFragmentManager, restrictedAppDao)
 
                 binding.appsRv.layoutManager =
                     if (layoutType == AppDrawerLayout.GRID_LAYOUT.toString()) {

@@ -1,4 +1,4 @@
-package com.studynotes.mylauncher.bottomSheet
+package com.studynotes.mylauncher.popUpFragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

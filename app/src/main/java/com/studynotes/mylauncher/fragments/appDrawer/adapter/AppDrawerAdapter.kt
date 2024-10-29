@@ -7,19 +7,25 @@ import android.widget.Filter
 import android.widget.Filterable
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import com.studynotes.mylauncher.bottomSheet.AppSettingsBottomSheet
-import com.studynotes.mylauncher.bottomSheet.SelectAppDrawerLayoutBottomSheet
-import com.studynotes.mylauncher.bottomSheet.SelectTimeLimitDialog
+import com.studynotes.mylauncher.popUpFragments.AppSettingsBottomSheet
+import com.studynotes.mylauncher.popUpFragments.SelectAppDrawerLayoutBottomSheet
+import com.studynotes.mylauncher.popUpFragments.SelectTimeLimitDialog
 import com.studynotes.mylauncher.databinding.IconTitleItemLayoutBinding
 import com.studynotes.mylauncher.databinding.ItemAppIconBinding
 import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
+import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
 import com.studynotes.mylauncher.viewUtils.ViewUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AppDrawerAdapter(
     private val appList: List<AppInfo>,
     private val layoutType: String,
     private val context: Context,
-    private val fragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager,
+    private val restrictedAppDao: RestrictedAppDao
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable,
     SelectAppDrawerLayoutBottomSheet.OnLayoutSelectedListener {
 
@@ -32,10 +38,7 @@ class AppDrawerAdapter(
 
             binding.imgIcon.setImageDrawable(appInfo.icon)
             binding.root.setOnClickListener {
-                SelectTimeLimitDialog(
-                    SelectTimeLimitDialog.Companion.DialogType.TYPE_SELECT_TIME_LIMIT,
-                    appInfo
-                ).show(fragmentManager, SelectTimeLimitDialog.TAG)
+                openAppByCondition(appInfo = appInfo )
             }
 
             binding.root.setOnLongClickListener {
@@ -49,19 +52,13 @@ class AppDrawerAdapter(
         }
     }
 
-
     inner class GridIconPackViewHolder(val binding: ItemAppIconBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(appInfo: AppInfo) {
             binding.tvAppLabel.text = appInfo.label
             binding.imgIcon.setImageDrawable(appInfo.icon)
             binding.root.setOnClickListener {
-                val launchIntent = appInfo.packageName?.let { it1 ->
-                    binding.root.context.packageManager.getLaunchIntentForPackage(
-                        it1
-                    )
-                }
-                launchIntent?.let { binding.root.context.startActivity(it) }
+                openAppByCondition(appInfo = appInfo )
             }
 
             binding.root.setOnLongClickListener {
@@ -140,6 +137,10 @@ class AppDrawerAdapter(
         return if (isHeader(position)) TYPE_HEADER else TYPE_ITEM
     }
 
+    override fun onLayoutSelected(layoutType: String) {
+        ViewUtils.showToast(context = context, "$layoutType Selected")
+    }
+
     private fun isHeader(position: Int): Boolean {
         if (position == 0) return true
         val currentLabel = appListFiltered[position].label?.get(0)
@@ -147,10 +148,36 @@ class AppDrawerAdapter(
         return currentLabel != previousLabel
     }
 
-    override fun onLayoutSelected(layoutType: String) {
-        ViewUtils.showToast(context = context, "$layoutType Selected")
+    private fun openAppByCondition(appInfo: AppInfo) {
+        checkIfAppIsRestricted(appInfo.packageName!!) { isRestricted ->
+            if (isRestricted) {
+                SelectTimeLimitDialog(
+                    SelectTimeLimitDialog.Companion.DialogType.TYPE_SELECT_TIME_LIMIT,
+                    appInfo
+                ).show(fragmentManager, SelectTimeLimitDialog.TAG)
+            } else {
+                launchApp(app = appInfo)
+            }
+        }
     }
 
+    private fun checkIfAppIsRestricted(packageName: String, callback: (Boolean) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val isRestricted = restrictedAppDao.isAppRestricted(packageName)
+            withContext(Dispatchers.Main) {
+                callback(isRestricted)
+            }
+        }
+    }
+
+    private fun launchApp(app: AppInfo) {
+        val launchIntent = app.packageName?.let {
+            context.packageManager.getLaunchIntentForPackage(it)
+        }
+        launchIntent?.let {
+            context.startActivity(it)
+        }
+    }
 }
 
 enum class AppDrawerLayout {

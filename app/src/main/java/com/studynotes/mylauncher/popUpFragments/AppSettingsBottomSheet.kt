@@ -1,4 +1,4 @@
-package com.studynotes.mylauncher.bottomSheet
+package com.studynotes.mylauncher.popUpFragments
 
 import android.content.Context
 import android.content.Intent
@@ -16,7 +16,9 @@ import com.studynotes.mylauncher.databinding.BottomSheetAppSettingsBinding
 import com.studynotes.mylauncher.databinding.LeadingIconWithTitleDialogItemBinding
 import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
+import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
 import com.studynotes.mylauncher.roomDB.Model.HomeApp
+import com.studynotes.mylauncher.roomDB.Model.RestrictedApp
 import com.studynotes.mylauncher.roomDB.convertors.Convertors
 import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
 import com.studynotes.mylauncher.viewUtils.ViewUtils
@@ -29,6 +31,7 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
 
     private lateinit var binding: BottomSheetAppSettingsBinding
     private var homeAppDao: HomeAppDao? = null
+    private var restrictedAppDao: RestrictedAppDao? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +46,7 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
         super.onViewCreated(view, savedInstanceState)
         activity?.let { ViewUtils.setTransparentNavigationBar(it) }
         homeAppDao = LauncherDatabase.getDatabase(requireContext()).homeAppDao()
+        restrictedAppDao = LauncherDatabase.getDatabase(requireContext()).restrictedAppsDao()
         setUpViews()
         setUpOnClick()
     }
@@ -73,6 +77,21 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
             }
         }
 
+        lifecycleScope.launch {
+            val isAppRestricted = restrictedAppDao?.isAppRestricted(appInfo.packageName!!) ?: false
+            val actionTitle =
+                if (isAppRestricted) "Disable SmartUsage Limits" else "Enable SmartUsage Limits"
+
+            bindingLeadingIconTitleTile(
+                binding.optionTimeLimit,
+                iconRes = R.drawable.icon_clock,
+                titleRes = actionTitle,
+                context = context
+            ) {
+                enableDisableSmartUsage(isAppRestricted, context)
+            }
+        }
+
         bindingLeadingIconTitleTile(
             binding.optionAppInfo,
             iconRes = R.drawable.ic_info,
@@ -95,14 +114,20 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
     }
 
     private fun addRemoveFromHome(isAppInHome: Boolean, context: Context) {
+
         CoroutineScope(Dispatchers.IO).launch {
             val homeAppCount = homeAppDao?.getHomeAppCount() ?: 0
 
             if (!isAppInHome && homeAppCount >= 6) {
-                withContext(Dispatchers.Main){ ViewUtils.showToast(context, "You can only add up to 6 apps to the Home screen.")}
+                withContext(Dispatchers.Main) {
+                    ViewUtils.showToast(
+                        context,
+                        "You can only add up to 6 apps to the Home screen."
+                    )
+                }
             } else {
                 if (isAppInHome) {
-                    homeAppDao?.deleteHomeAppByPackageName(packageName = appInfo.packageName.toString())
+                    homeAppDao?.deleteHomeAppByPackageName(packageName = appInfo.packageName!!)
                 } else {
                     homeAppDao?.insertHomeApp(
                         HomeApp(
@@ -111,13 +136,27 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
                             iconData = Convertors().fromDrawableToByteArray(appInfo.icon)
                         )
                     )
-                    withContext(Dispatchers.Main){ ViewUtils.showToast(context, "Added to Home") }
+                    withContext(Dispatchers.Main) { ViewUtils.showToast(context, "Added to Home") }
                 }
                 dismiss()
             }
         }
     }
 
+    private fun enableDisableSmartUsage(isAppRestricted: Boolean, context: Context) {
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+            if (isAppRestricted) {
+                restrictedAppDao?.removeFromRestrictedApps(packageName = appInfo.packageName!!)
+                withContext(Dispatchers.Main) { ViewUtils.showToast(context, "Disabled") }
+            } else {
+                restrictedAppDao?.insertRestrictedApp(RestrictedApp(packageName = appInfo.packageName!!))
+                withContext(Dispatchers.Main) { ViewUtils.showToast(context, "Enabled") }
+            }
+            dismiss()
+        }
+    }
 
     private fun openAppInfo() {
         val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
