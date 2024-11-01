@@ -12,6 +12,20 @@ import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Calendar
+
+enum class TimeBase {
+    MORNING, EVENING, NIGHT
+}
+
+fun getCurrentTime(): TimeBase {
+    val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    return when (currentHour) {
+        in 6..11 -> TimeBase.MORNING
+        in 12..17 -> TimeBase.EVENING
+        else -> TimeBase.NIGHT
+    }
+}
 
 fun openBrowser(context: Context, url: String) {
     var finalUrl = url

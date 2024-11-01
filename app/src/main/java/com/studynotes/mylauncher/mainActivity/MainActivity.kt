@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.studynotes.mylauncher.R
@@ -16,12 +18,11 @@ import com.studynotes.mylauncher.mainActivity.adapter.ScreenSlidePagerAdapter
 import com.studynotes.mylauncher.databinding.ActivityMainBinding
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
-import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
 import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
-import com.studynotes.mylauncher.settings.SettingsActivity
+import com.studynotes.mylauncher.utils.TimeBase
+import com.studynotes.mylauncher.utils.getCurrentTime
 import com.studynotes.mylauncher.viewUtils.FadePageTransformer
 import com.studynotes.mylauncher.viewUtils.ViewUtils
-import java.util.Calendar
 
 class MainActivity : AppCompatActivity() {
 
@@ -80,10 +81,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setUpWallPaper(wallpaperState: Boolean) {
-        Log.d("zzz", "Wallpaper set")
         val focusModeState = BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_FOCUS_MODE, false)
-        Log.d("zzz", focusModeState.toString())
-
         if (focusModeState) {
             val backgroundColor = ContextCompat.getColor(this, R.color.black)
             binding.root.setBackgroundColor(backgroundColor)
@@ -109,6 +107,8 @@ class MainActivity : AppCompatActivity() {
             } else {
                 binding.mainWallpaper.visibility = View.GONE
             }
+            val backgroundColor = ContextCompat.getColor(this, R.color.transparent)
+            binding.root.setBackgroundColor(backgroundColor)
         }
     }
 
@@ -125,25 +125,17 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager.setPageTransformer(FadePageTransformer())
     }
 
-
-    enum class TimeBase {
-        MORNING, EVENING, NIGHT
-    }
-
-    private fun getCurrentTime(): TimeBase {
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        return when (currentHour) {
-            in 6..11 -> TimeBase.MORNING
-            in 12..17 -> TimeBase.EVENING
-            else -> TimeBase.NIGHT
-        }
-    }
-
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
         val defaultPageIndex = 0
         if (binding.viewPager.currentItem != defaultPageIndex) {
             binding.viewPager.setCurrentItem(defaultPageIndex, true)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("zzz", "ONStart Call")
+        setUpViews()
     }
 }

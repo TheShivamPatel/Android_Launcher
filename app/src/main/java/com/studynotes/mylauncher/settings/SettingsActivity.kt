@@ -1,9 +1,9 @@
 package com.studynotes.mylauncher.settings
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -13,15 +13,16 @@ import com.studynotes.mylauncher.databinding.HorizontalIconTextItemBinding
 import com.studynotes.mylauncher.databinding.MoreOptionsLayoutBinding
 import com.studynotes.mylauncher.databinding.SwitchIconSettingItemBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
-import com.studynotes.mylauncher.mainActivity.MainActivity.TimeBase
+import com.studynotes.mylauncher.mainActivity.MainActivity
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
+import com.studynotes.mylauncher.utils.TimeBase
+import com.studynotes.mylauncher.utils.getCurrentTime
 import com.studynotes.mylauncher.utils.openAppOnPlayStore
 import com.studynotes.mylauncher.utils.openBrowser
 import com.studynotes.mylauncher.utils.shareImageFromDrawable
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import com.studynotes.mylauncher.viewUtils.ViewUtils.setStatusBarColor
-import java.util.Calendar
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -115,17 +116,12 @@ class SettingsActivity : AppCompatActivity() {
         if (isChecked) {
             val backgroundColor = ContextCompat.getColor(this, R.color.black)
             binding.root.setBackgroundColor(backgroundColor)
-            BasePreferenceManager.putString(
-                this,
-                SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT,
-                AppDrawerLayout.LINEAR_LAYOUT.toString()
-            )
+            BasePreferenceManager.putString(this, SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT, AppDrawerLayout.LINEAR_LAYOUT.toString())
         } else {
             val backgroundColor = ContextCompat.getColor(this, R.color.transparent)
             binding.root.setBackgroundColor(backgroundColor)
         }
         BasePreferenceManager.putBoolean(this, SharedPrefsConstants.KEY_FOCUS_MODE, isChecked)
-        Log.d("zzz", isChecked.toString())
     }
 
 
@@ -136,8 +132,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setUpWallPaper(wallpaperState: Boolean) {
 
-        val focusModeState =
-            BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_FOCUS_MODE, false)
+        val focusModeState = BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_FOCUS_MODE, false)
 
         if (focusModeState) {
 
@@ -168,22 +163,9 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    enum class TimeBase {
-        MORNING, EVENING, NIGHT
-    }
-
-    private fun getCurrentTime(): TimeBase {
-        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-        return when (currentHour) {
-            in 6..11 -> TimeBase.MORNING
-            in 12..17 -> TimeBase.EVENING
-            else -> TimeBase.NIGHT
-        }
-    }
-
     private fun setUpToolbar() {
         binding.toolbar.toolbarBackIcon.setOnClickListener {
-            finish()
+            startActivity(Intent(this, MainActivity::class.java))
         }
         binding.toolbar.toolbarTitle.text = getString(R.string.settings)
         binding.toolbar.toolbarIconMore.visibility = View.GONE
@@ -197,7 +179,6 @@ class SettingsActivity : AppCompatActivity() {
             ContextCompat.getColor(this@SettingsActivity, R.color.transparent)
         )
     }
-
 
     private fun setUpAboutAppCard(context: Context) {
         bindAboutCardItem(

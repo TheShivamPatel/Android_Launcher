@@ -6,6 +6,6 @@
         android:type="linear"
         android:angle="1"/>
 
-    <stroke android:width="0.5dp" android:color="@color/white"/>
+    <stroke android:width="0.5dp" android:color="@color/grey_200"/>
 
 </shape>
