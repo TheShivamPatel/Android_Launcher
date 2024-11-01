@@ -1,6 +1,7 @@
 package com.studynotes.mylauncher.fragments.home
 
 import android.app.usage.UsageEvents
+import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.studynotes.mylauncher.R
@@ -24,7 +26,9 @@ import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
 import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
 import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
+import com.studynotes.mylauncher.settings.SettingsActivity
 import com.studynotes.mylauncher.viewUtils.ViewUtils
+import java.util.Calendar
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
@@ -65,6 +69,11 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     }
 
     private fun setUpOnClick() {
+
+        binding.root.setOnClickListener {
+            startActivity(Intent(context, SettingsActivity::class.java))
+        }
+
         binding.llAddHomeApps.setOnClickListener {
             startActivity(
                 Intent(
@@ -75,6 +84,21 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
         }
 
         binding.tvClock.setOnClickListener {
+
+            val usageStatsManager = context?.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+            val endTime =  System.currentTimeMillis()
+            val beginTime = endTime - 1000 * 60 * 60 * 24 // Last 24 hours
+            val usageStatsList = usageStatsManager.queryUsageStats(
+                UsageStatsManager.INTERVAL_DAILY,
+                beginTime,
+                endTime
+            )
+
+            if (usageStatsList != null && usageStatsList.isNotEmpty()) {
+                for (usageStats in usageStatsList) {
+                    Log.d("zzz", "Package: ${usageStats.packageName}, Last time used: ${usageStats.lastTimeUsed}, Total time in foreground: ${usageStats.totalTimeInForeground}")
+                }
+            }
 
         }
 

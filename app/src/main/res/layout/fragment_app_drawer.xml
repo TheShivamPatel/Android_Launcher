@@ -37,11 +37,11 @@
         <ImageButton
             android:id="@+id/setting_btn"
             android:layout_width="@dimen/size_26"
-            android:layout_height="@dimen/size_26"
+            android:layout_height="@dimen/size_23"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/size_12"
             android:background="@color/transparent"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:src="@drawable/icon_settings" />
 
     </LinearLayout>

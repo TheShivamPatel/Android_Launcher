@@ -6,19 +6,44 @@
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_bg">
 
-    <include
+    <LinearLayout
         android:id="@+id/toolbar"
-        layout="@layout/toolbar_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_2" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/size_16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_app_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Select layout"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_20" />
+
+        <ImageView
+            android:id="@+id/image_close"
+            android:layout_width="@dimen/size_22"
+            android:layout_height="@dimen/size_22"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_close" />
+
+    </LinearLayout>
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_8"
         android:layout_marginHorizontal="@dimen/size_16"
+        android:layout_marginTop="@dimen/size_8"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tools:ignore="MissingConstraints">

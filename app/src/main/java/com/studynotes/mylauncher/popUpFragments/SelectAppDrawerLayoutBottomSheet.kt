@@ -33,15 +33,13 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
         super.onViewCreated(view, savedInstanceState)
 
         setUpLayoutMode()
-        setUpToolbar()
+        setUpOnClick()
+
     }
 
-    private fun setUpToolbar() {
-        binding.toolbar.toolbarTitle.text = "Select Layout"
-        binding.toolbar.toolbarBackIcon.setOnClickListener { dismiss() }
-        binding.toolbar.toolbarIconMore.visibility = View.GONE
+    private fun setUpOnClick() {
+        binding.imageClose.setOnClickListener { dismiss() }
     }
-
 
     private fun setUpLayoutMode() {
 
@@ -51,8 +49,12 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
                 it,
                 SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT
             )) {
-                AppDrawerLayout.LINEAR_LAYOUT.toString() -> binding.simpleListRadioButton.isChecked = true
-                AppDrawerLayout.GRID_LAYOUT.toString() -> binding.gridListRadioButton.isChecked = true
+                AppDrawerLayout.LINEAR_LAYOUT.toString() -> binding.simpleListRadioButton.isChecked =
+                    true
+
+                AppDrawerLayout.GRID_LAYOUT.toString() -> binding.gridListRadioButton.isChecked =
+                    true
+
                 else -> binding.simpleListRadioButton.isChecked = true
             }
 

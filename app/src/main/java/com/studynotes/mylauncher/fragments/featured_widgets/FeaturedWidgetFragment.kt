@@ -49,10 +49,6 @@ class FeaturedWidgetFragment : Fragment(R.layout.fragment_featured_widget) {
         binding.callenderWidget.setOnClickListener {
             startActivity(Intent(Settings.ACTION_HOME_SETTINGS))
         }
-
-        binding.studyModeMore.setOnClickListener {
-            startActivity(Intent(context, SpecialAppsActivity::class.java))
-        }
         binding.wallpaperWidget.setOnClickListener {
             context?.let { it1 ->
                 val wallpaperState = BasePreferenceManager.getBoolean(it1, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
