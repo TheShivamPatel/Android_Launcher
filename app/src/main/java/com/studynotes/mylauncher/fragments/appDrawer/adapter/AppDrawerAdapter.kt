@@ -2,6 +2,7 @@ package com.studynotes.mylauncher.fragments.appDrawer.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
@@ -13,6 +14,8 @@ import com.studynotes.mylauncher.popUpFragments.SelectTimeLimitDialog
 import com.studynotes.mylauncher.databinding.IconTitleItemLayoutBinding
 import com.studynotes.mylauncher.databinding.ItemAppIconBinding
 import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
+import com.studynotes.mylauncher.prefs.BasePreferenceManager
+import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +39,11 @@ class AppDrawerAdapter(
         fun bind(appInfo: AppInfo) {
             binding.tvAppLabel.text = appInfo.label
 
-            binding.imgIcon.setImageDrawable(appInfo.icon)
+            if(checkIfFocusMode()){
+                binding.imgIcon.visibility = View.GONE
+            }else{
+                binding.imgIcon.setImageDrawable(appInfo.icon)
+            }
             binding.root.setOnClickListener {
                 openAppByCondition(appInfo = appInfo )
             }
@@ -177,6 +184,11 @@ class AppDrawerAdapter(
         launchIntent?.let {
             context.startActivity(it)
         }
+    }
+
+    private fun checkIfFocusMode() : Boolean{
+        val focusModeStatus = BasePreferenceManager.getBoolean(context, SharedPrefsConstants.KEY_FOCUS_MODE, false)
+        return focusModeStatus
     }
 }
 

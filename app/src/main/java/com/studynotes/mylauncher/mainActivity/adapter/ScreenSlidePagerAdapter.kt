@@ -8,13 +8,13 @@ import com.studynotes.mylauncher.fragments.featured_widgets.FeaturedWidgetFragme
 import com.studynotes.mylauncher.fragments.home.HomeScreenFragment
 
 class ScreenSlidePagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
-    override fun getItemCount(): Int = 3
+    override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> FeaturedWidgetFragment()
-            1 -> HomeScreenFragment()
-            2 -> AppDrawerFragment()
+//            0 -> FeaturedWidgetFragment()
+            0 -> HomeScreenFragment()
+            1 -> AppDrawerFragment()
             else -> HomeScreenFragment()
         }
     }

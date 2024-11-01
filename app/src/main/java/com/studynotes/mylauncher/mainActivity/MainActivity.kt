@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,6 +18,7 @@ import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
 import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
+import com.studynotes.mylauncher.settings.SettingsActivity
 import com.studynotes.mylauncher.viewUtils.FadePageTransformer
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import java.util.Calendar
@@ -72,30 +74,41 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpViews() {
         setUpViewPager()
-        wallpaperState =
-            BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
+
+        wallpaperState = BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
         setUpWallPaper(wallpaperState)
     }
 
     fun setUpWallPaper(wallpaperState: Boolean) {
-        if (wallpaperState) {
-            val currentTime = getCurrentTime()
+        Log.d("zzz", "Wallpaper set")
+        val focusModeState = BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_FOCUS_MODE, false)
+        Log.d("zzz", focusModeState.toString())
 
-            val wallpaperResource = when (currentTime) {
-                TimeBase.MORNING -> R.drawable.bg_1
-                TimeBase.EVENING -> R.drawable.bg_2
-                TimeBase.NIGHT -> R.drawable.bg_3
-            }
-
-            binding.mainWallpaper.setImageDrawable(
-                ContextCompat.getDrawable(
-                    this,
-                    wallpaperResource
-                )
-            )
-            binding.mainWallpaper.visibility = View.VISIBLE
-        } else {
+        if (focusModeState) {
+            val backgroundColor = ContextCompat.getColor(this, R.color.black)
+            binding.root.setBackgroundColor(backgroundColor)
             binding.mainWallpaper.visibility = View.GONE
+        } else {
+
+            if (wallpaperState) {
+                val currentTime = getCurrentTime()
+
+                val wallpaperResource = when (currentTime) {
+                    TimeBase.MORNING -> R.drawable.bg_1
+                    TimeBase.EVENING -> R.drawable.bg_2
+                    TimeBase.NIGHT -> R.drawable.bg_3
+                }
+
+                binding.mainWallpaper.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        wallpaperResource
+                    )
+                )
+                binding.mainWallpaper.visibility = View.VISIBLE
+            } else {
+                binding.mainWallpaper.visibility = View.GONE
+            }
         }
     }
 
@@ -108,7 +121,7 @@ class MainActivity : AppCompatActivity() {
     private fun setUpViewPager() {
         pagerAdapter = ScreenSlidePagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
-        binding.viewPager.setCurrentItem(1, false)
+        binding.viewPager.setCurrentItem(0, false)
         binding.viewPager.setPageTransformer(FadePageTransformer())
     }
 
@@ -128,7 +141,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-        val defaultPageIndex = 1
+        val defaultPageIndex = 0
         if (binding.viewPager.currentItem != defaultPageIndex) {
             binding.viewPager.setCurrentItem(defaultPageIndex, true)
         }

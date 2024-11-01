@@ -3,4 +3,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title">Title</string>
     <string name="settings">Settings</string>
+    <string name="productive_mode">Productive Mode</string>
+    <string name="wallpaper">Wallpaper</string>
+    <string name="review">Review</string>
+    <string name="share_app">Share App</string>
+    <string name="tnc">Terms and conditions</string>
+    <string name="about_us">About us</string>
+    <string name="report">Report</string>
 </resources>

@@ -38,9 +38,6 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     private var homeAppDao: HomeAppDao? = null
     private lateinit var restrictedAppDao: RestrictedAppDao
 
-    private val handler = Handler(Looper.getMainLooper())
-    private val interval: Long = 5000
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,8 +67,9 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
     private fun setUpOnClick() {
 
-        binding.root.setOnClickListener {
+        binding.root.setOnLongClickListener {
             startActivity(Intent(context, SettingsActivity::class.java))
+            return@setOnLongClickListener true
         }
 
         binding.llAddHomeApps.setOnClickListener {
