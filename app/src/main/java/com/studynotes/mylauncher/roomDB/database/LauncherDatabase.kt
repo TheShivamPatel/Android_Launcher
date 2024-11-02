@@ -5,18 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.studynotes.mylauncher.roomDB.Dao.HiddenAppDao
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
 import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
+import com.studynotes.mylauncher.roomDB.Model.HiddenApps
 import com.studynotes.mylauncher.roomDB.Model.HomeApp
 import com.studynotes.mylauncher.roomDB.Model.RestrictedApp
 import com.studynotes.mylauncher.roomDB.convertors.Convertors
 
-@Database(entities = [HomeApp::class, RestrictedApp::class], version = 1)
+@Database(entities = [HomeApp::class, RestrictedApp::class, HiddenApps::class], version = 1)
 @TypeConverters(Convertors::class)
 abstract class LauncherDatabase : RoomDatabase() {
 
     abstract fun homeAppDao(): HomeAppDao
     abstract fun restrictedAppsDao() : RestrictedAppDao
+    abstract fun hiddenAddictiveAppsDao() : HiddenAppDao
 
     companion object {
         @Volatile

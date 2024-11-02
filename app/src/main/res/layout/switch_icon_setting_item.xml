@@ -20,28 +20,44 @@
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_8"
+        android:fontFamily="@font/montserrat_medium"
         android:text="@string/title"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_16"
-        android:layout_marginStart="@dimen/size_8"
-        android:fontFamily="@font/montserrat_medium"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_subtitle"
         app:layout_constraintEnd_toStartOf="@+id/swOnOff"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/leadingIcon"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tv_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/subtitle"
+        android:textColor="@color/grey_200"
+        android:textSize="@dimen/text_size_10"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <Switch
         android:id="@+id/swOnOff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:thumb="@drawable/custom_thumb"
+        android:track="@drawable/custom_track"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
-        tools:ignore="UseSwitchCompatOrMaterialXml"
-        android:track="@drawable/custom_track"
-        android:thumb="@drawable/custom_thumb" />
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

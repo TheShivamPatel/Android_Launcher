@@ -10,4 +10,9 @@
     <string name="tnc">Terms and conditions</string>
     <string name="about_us">About us</string>
     <string name="report">Report</string>
+    <string name="color_theme">Color Theme</string>
+    <string name="select_addictive_apps">Select Addictive Apps</string>
+    <string name="select_color_theme">Select Color Theme</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="distraction_free_label">Your selected apps are hidden, creating a distraction-free environment for your work.</string>
 </resources>

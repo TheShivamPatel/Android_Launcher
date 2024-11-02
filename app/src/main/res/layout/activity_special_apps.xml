@@ -5,26 +5,56 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryCardColor"
+    android:background="@color/white"
     tools:context=".specialApps.SpecialAppsActivity">
 
-    <include
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolbar"
-        layout="@layout/toolbar_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/size_50"
+        android:layout_height="?android:attr/actionBarSize"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/toolbar_back_icon"
+            android:layout_width="@dimen/size_50"
+            android:layout_height="match_parent"
+            android:padding="@dimen/size_12"
+            android:src="@drawable/icon_back"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="center_vertical"
+            android:text="@string/select_addictive_apps"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_22"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/toolbar_back_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginStart="@dimen/size_16" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/textView"
+        style="@style/labelMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose your favorite apps for quick access on your home screen"
         android:layout_margin="@dimen/size_16"
-        style="@style/labelMedium"
+        android:text="@string/distraction_free_label"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

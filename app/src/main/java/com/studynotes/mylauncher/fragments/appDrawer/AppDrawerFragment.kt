@@ -26,7 +26,9 @@ import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
 import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
+import com.studynotes.mylauncher.roomDB.Dao.HiddenAppDao
 import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
+import com.studynotes.mylauncher.roomDB.Model.HiddenApps
 import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +40,7 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
     private lateinit var binding: FragmentAppDrawerBinding
     private var adapter: AppDrawerAdapter? = null
     private lateinit var restrictedAppDao: RestrictedAppDao
+    private lateinit var hiddenAppDao: HiddenAppDao
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +54,10 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.let { ViewUtils.setTransparentNavigationBar(it) }
-        context?.let { restrictedAppDao = LauncherDatabase.getDatabase(it).restrictedAppsDao() }
+        context?.let {
+            restrictedAppDao = LauncherDatabase.getDatabase(it).restrictedAppsDao()
+            hiddenAppDao = LauncherDatabase.getDatabase(it).hiddenAddictiveAppsDao()
+        }
         setUpSearch()
         setUpViews()
         setUpOnClick()
@@ -136,7 +142,13 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
             lifecycleScope.launch {
                 val installedApps = withContext(Dispatchers.IO) { getInstalledAppList(it) }
                 installedApps.sortBy { appInfo: AppInfo -> appInfo.label }
-                adapter = AppDrawerAdapter(installedApps, layoutType, it, requireActivity().supportFragmentManager, restrictedAppDao)
+                adapter = AppDrawerAdapter(
+                    installedApps,
+                    layoutType,
+                    it,
+                    requireActivity().supportFragmentManager,
+                    restrictedAppDao
+                )
 
                 binding.appsRv.layoutManager =
                     if (layoutType == AppDrawerLayout.GRID_LAYOUT.toString()) {
@@ -150,7 +162,7 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun getInstalledAppList(context: Context): MutableList<AppInfo> {
+    private suspend fun getInstalledAppList(context: Context): MutableList<AppInfo> {
         val packageManager = context.packageManager
         val intent = Intent(Intent.ACTION_MAIN, null).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)
@@ -161,13 +173,17 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
 
         for (ri in allApps) {
             val appPackageName = ri.activityInfo.packageName
-            val app = AppInfo(
-                label = ri.loadLabel(packageManager).toString(),
-                packageName = appPackageName,
-                icon = ri.activityInfo.loadIcon(packageManager)
-            )
-            Log.i("AppDrawerFragment", "Social app found: ${app.packageName}")
-            installedApps.add(app)
+
+            val isHidden = hiddenAppDao.isAppAddictive(appPackageName)
+
+            if (!isHidden) {
+                val app = AppInfo(
+                    label = ri.loadLabel(packageManager).toString(),
+                    packageName = appPackageName,
+                    icon = ri.activityInfo.loadIcon(packageManager)
+                )
+                installedApps.add(app)
+            }
         }
         return installedApps
     }

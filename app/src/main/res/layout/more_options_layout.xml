@@ -4,6 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+    <ImageView
+        android:id="@+id/leadingIcon"
+        android:layout_width="@dimen/size_24"
+        android:layout_height="@dimen/size_24"
+        android:src="@drawable/ic_info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:tint="@color/white" />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="0dp"
@@ -11,10 +23,11 @@
         android:fontFamily="@font/montserrat_regular"
         android:text="@string/title"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_14"
+        android:textSize="@dimen/text_size_16"
+        android:layout_marginStart="@dimen/size_8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/img_more"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/leadingIcon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5" />
 

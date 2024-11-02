@@ -1,8 +1,8 @@
 package com.studynotes.mylauncher.settings
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +14,10 @@ import com.studynotes.mylauncher.databinding.MoreOptionsLayoutBinding
 import com.studynotes.mylauncher.databinding.SwitchIconSettingItemBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
 import com.studynotes.mylauncher.mainActivity.MainActivity
+import com.studynotes.mylauncher.popUpFragments.themeColorPicker.ThemeColorPickerBottomSheet
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
+import com.studynotes.mylauncher.specialApps.SpecialAppsActivity
 import com.studynotes.mylauncher.utils.TimeBase
 import com.studynotes.mylauncher.utils.getCurrentTime
 import com.studynotes.mylauncher.utils.openAppOnPlayStore
@@ -28,20 +30,21 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
     private var wallpaperState: Boolean = false
+    private var backgroundColor : Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpToolbar()
+        getFocusBgColor()
         setUpViews()
         setUpStatusBar()
         setUpOnClick()
     }
 
     private fun setUpViews() {
-        wallpaperState =
-            BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
+        wallpaperState = BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
         setUpWallPaper(wallpaperState)
 
         setUpAboutAppCard(this)
@@ -50,6 +53,7 @@ class SettingsActivity : AppCompatActivity() {
             switchIconSettingItemBinding = binding.autoWallpaperSetting,
             iconRes = R.drawable.ic_wallpaper,
             titleTxt = "Auto wallpaper",
+            subTitleTxt = "Let your wallpaper evolve with the sun.",
             keyName = SharedPrefsConstants.KEY_AUTO_WALLPAPER,
             context = this
         ) {
@@ -60,6 +64,7 @@ class SettingsActivity : AppCompatActivity() {
             switchIconSettingItemBinding = binding.focusSetting,
             iconRes = R.drawable.icon_focus,
             titleTxt = "Focus Mode",
+            subTitleTxt = "A distraction-free environment for focused work.",
             keyName = SharedPrefsConstants.KEY_FOCUS_MODE,
             context = this,
         ) {
@@ -69,13 +74,22 @@ class SettingsActivity : AppCompatActivity() {
 
         bindingMoreOptionsLayout(
             moreOptionsLayoutBinding = binding.selectAddictiveApps,
-            textRes = "Select Addictive Apps"
-        ) {}
+            iconRes = R.drawable.icon_hide,
+            textRes = getString(R.string.select_addictive_apps)
+        ) {
+            startActivity(Intent(this, SpecialAppsActivity::class.java))
+        }
 
         bindingMoreOptionsLayout(
             moreOptionsLayoutBinding = binding.selectColorTheme,
-            textRes = "Select Color Theme"
-        ) {}
+            iconRes = R.drawable.icon_color_theme,
+            textRes = getString(R.string.select_color_theme)
+        ) {
+            ThemeColorPickerBottomSheet{ backgroundColor = it
+                BasePreferenceManager.putString(this, SharedPrefsConstants.KEY_FOCUS_MODE_BG_COLOR, "0xFF0B0B0B")
+                toggleWallpaperState(false, this, SharedPrefsConstants.KEY_AUTO_WALLPAPER)
+            }.show(supportFragmentManager, "ThemeColorPickerBottomSheet" )
+        }
     }
 
     private fun setUpOnClick() {
@@ -86,6 +100,7 @@ class SettingsActivity : AppCompatActivity() {
         switchIconSettingItemBinding: SwitchIconSettingItemBinding,
         iconRes: Int,
         titleTxt: String,
+        subTitleTxt: String,
         keyName: String,
         context: Context,
         onClick: (isChecked: Boolean) -> Unit
@@ -95,7 +110,11 @@ class SettingsActivity : AppCompatActivity() {
             leadingIcon.setImageDrawable(
                 ContextCompat.getDrawable(context, iconRes)
             )
-            val switchState = BasePreferenceManager.getBoolean(context, keyName, true)
+            if(subTitleTxt.isNotBlank()){
+                tvSubtitle.visibility = View.VISIBLE
+                tvSubtitle.text = subTitleTxt
+            }
+            val switchState = BasePreferenceManager.getBoolean(context, keyName, false)
             swOnOff.isChecked = switchState
             swOnOff.setOnCheckedChangeListener { _, isChecked ->
                 onClick(isChecked)
@@ -106,8 +125,10 @@ class SettingsActivity : AppCompatActivity() {
     private fun bindingMoreOptionsLayout(
         moreOptionsLayoutBinding: MoreOptionsLayoutBinding,
         textRes: String,
+        iconRes: Int,
         onClick: () -> Unit
     ) {
+        moreOptionsLayoutBinding.leadingIcon.setImageDrawable(ContextCompat.getDrawable(this, iconRes))
         moreOptionsLayoutBinding.title.text = textRes
         moreOptionsLayoutBinding.root.setOnClickListener { onClick() }
     }
@@ -116,7 +137,7 @@ class SettingsActivity : AppCompatActivity() {
         if (isChecked) {
             val backgroundColor = ContextCompat.getColor(this, R.color.black)
             binding.root.setBackgroundColor(backgroundColor)
-            BasePreferenceManager.putString(this, SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT, AppDrawerLayout.LINEAR_LAYOUT.toString())
+            BasePreferenceManager.putString(this, SharedPrefsConstants.KEY_FOCUS_MODE_BG_COLOR, AppDrawerLayout.LINEAR_LAYOUT.toString())
         } else {
             val backgroundColor = ContextCompat.getColor(this, R.color.transparent)
             binding.root.setBackgroundColor(backgroundColor)
@@ -133,10 +154,8 @@ class SettingsActivity : AppCompatActivity() {
     private fun setUpWallPaper(wallpaperState: Boolean) {
 
         val focusModeState = BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_FOCUS_MODE, false)
-
+        val backgroundColor = ContextCompat.getColor(this, R.color.black)
         if (focusModeState) {
-
-            val backgroundColor = ContextCompat.getColor(this, R.color.black)
             binding.root.setBackgroundColor(backgroundColor)
             binding.mainWallpaper.visibility = View.GONE
         } else {
@@ -161,6 +180,21 @@ class SettingsActivity : AppCompatActivity() {
                 binding.mainWallpaper.visibility = View.GONE
             }
         }
+    }
+
+    private fun getFocusBgColor(): Int {
+        var backgroundColor : Int? = 0
+        val bgState = BasePreferenceManager.getString(this, SharedPrefsConstants.KEY_FOCUS_MODE_BG_COLOR)
+        backgroundColor = if (bgState.isNullOrEmpty()) {
+            ContextCompat.getColor(this, R.color.black)
+        } else {
+            try {
+                Color.parseColor(bgState)
+            } catch (e: IllegalArgumentException) {
+                ContextCompat.getColor(this, R.color.black)
+            }
+        }
+        return backgroundColor as Int
     }
 
     private fun setUpToolbar() {
