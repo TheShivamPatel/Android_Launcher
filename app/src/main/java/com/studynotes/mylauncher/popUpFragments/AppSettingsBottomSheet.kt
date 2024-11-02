@@ -66,10 +66,11 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
         lifecycleScope.launch {
             val isAppInHome = homeAppDao?.isAppInHome(appInfo.packageName!!) ?: false
             val actionTitle = if (isAppInHome) "Remove from Home" else "Add to Home"
+            val homeIcon = if(isAppInHome) R.drawable.ic_home_remove else R.drawable.ic_home
 
             bindingLeadingIconTitleTile(
                 binding.optionAddRemoveHomeApp,
-                iconRes = R.drawable.ic_home,
+                iconRes = homeIcon,
                 titleRes = actionTitle,
                 context = context
             ) {

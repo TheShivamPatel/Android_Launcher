@@ -2,29 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center|top"
     android:paddingBottom="@dimen/size_28">
 
-
     <ImageView
         android:id="@+id/img_icon"
-        android:layout_width="@dimen/size_50"
-        android:layout_height="@dimen/size_50"
+        android:layout_width="@dimen/size_46"
+        android:layout_height="@dimen/size_46"
         android:src="@mipmap/ic_launcher"/>
 
     <TextView
         android:id="@+id/tv_app_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="WhatsApp"
+        android:text="@string/title"
         android:layout_marginTop="@dimen/size_6"
         android:textSize="@dimen/text_size_12"
         android:gravity="center"
         android:maxLines="2"
         android:ellipsize="end"
         android:textColor="@color/white"
-        android:fontFamily="@font/montserrat_semibold"/>
+        android:fontFamily="@font/montserrat_semibold"
+        android:paddingHorizontal="@dimen/size_8"/>
 
 </LinearLayout>

@@ -15,4 +15,5 @@
     <string name="select_color_theme">Select Color Theme</string>
     <string name="subtitle">Subtitle</string>
     <string name="distraction_free_label">Your selected apps are hidden, creating a distraction-free environment for your work.</string>
+    <string name="wallpaper_option_desc">Let your wallpaper evolve with the sun.</string>
 </resources>

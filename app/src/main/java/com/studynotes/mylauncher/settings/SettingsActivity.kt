@@ -40,7 +40,6 @@ class SettingsActivity : AppCompatActivity() {
         getFocusBgColor()
         setUpViews()
         setUpStatusBar()
-        setUpOnClick()
     }
 
     private fun setUpViews() {
@@ -53,7 +52,7 @@ class SettingsActivity : AppCompatActivity() {
             switchIconSettingItemBinding = binding.autoWallpaperSetting,
             iconRes = R.drawable.ic_wallpaper,
             titleTxt = "Auto wallpaper",
-            subTitleTxt = "Let your wallpaper evolve with the sun.",
+            subTitleTxt = getString(R.string.wallpaper_option_desc),
             keyName = SharedPrefsConstants.KEY_AUTO_WALLPAPER,
             context = this
         ) {
@@ -90,10 +89,6 @@ class SettingsActivity : AppCompatActivity() {
                 toggleWallpaperState(false, this, SharedPrefsConstants.KEY_AUTO_WALLPAPER)
             }.show(supportFragmentManager, "ThemeColorPickerBottomSheet" )
         }
-    }
-
-    private fun setUpOnClick() {
-
     }
 
     private fun bindingSwitchIconSettingItem(

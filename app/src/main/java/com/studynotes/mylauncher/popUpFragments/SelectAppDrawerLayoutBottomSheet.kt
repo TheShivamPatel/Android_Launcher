@@ -1,5 +1,6 @@
 package com.studynotes.mylauncher.popUpFragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import com.studynotes.mylauncher.databinding.BottomSheetAppDrawerSettingsBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
+import com.studynotes.mylauncher.settings.SettingsActivity
+import com.studynotes.mylauncher.viewUtils.ViewUtils
 
 class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedListener) :
     BottomSheetDialogFragment() {
@@ -39,14 +42,20 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
 
     private fun setUpOnClick() {
         binding.imageClose.setOnClickListener { dismiss() }
+
+        binding.llMainSettings.setOnClickListener {
+            startActivity(Intent(context, SettingsActivity::class.java))
+            dismiss()
+        }
+
     }
 
     private fun setUpLayoutMode() {
 
-        context?.let {
+        context?.let {ctx->
 
             when (BasePreferenceManager.getString(
-                it,
+                ctx,
                 SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT
             )) {
                 AppDrawerLayout.LINEAR_LAYOUT.toString() -> binding.simpleListRadioButton.isChecked =
@@ -59,10 +68,17 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
             }
 
             binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+
+                val isFocusModeEnable =  BasePreferenceManager.getBoolean(ctx, SharedPrefsConstants.KEY_FOCUS_MODE, false)
+                if(isFocusModeEnable) {
+                    ViewUtils.showToast(ctx, "Stay in the zone! Layout options are locked while Focus Mode is enabled.")
+                    dismiss()
+                    return@setOnCheckedChangeListener
+                }
                 when (checkedId) {
                     R.id.simpleListRadioButton -> {
                         BasePreferenceManager.putString(
-                            it,
+                            ctx,
                             SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT,
                             AppDrawerLayout.LINEAR_LAYOUT.toString()
                         )
@@ -72,7 +88,7 @@ class SelectAppDrawerLayoutBottomSheet(private val listener: OnLayoutSelectedLis
 
                     R.id.gridListRadioButton -> {
                         BasePreferenceManager.putString(
-                            it,
+                            ctx,
                             SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT,
                             AppDrawerLayout.GRID_LAYOUT.toString()
                         )
