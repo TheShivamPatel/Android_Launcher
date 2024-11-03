@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -69,6 +70,14 @@ class SettingsActivity : AppCompatActivity() {
         ) {
             toggleWallpaperState(false, this, SharedPrefsConstants.KEY_AUTO_WALLPAPER)
             setUpFocusMode(it)
+        }
+
+        bindingMoreOptionsLayout(
+            moreOptionsLayoutBinding = binding.selectChangeLauncher,
+            iconRes = R.drawable.ic_home,
+            textRes = "Change Launcher"
+        ) {
+            startActivity(Intent(Settings.ACTION_HOME_SETTINGS))
         }
 
         bindingMoreOptionsLayout(

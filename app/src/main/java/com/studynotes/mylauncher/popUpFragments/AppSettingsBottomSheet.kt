@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,10 @@ import com.studynotes.mylauncher.R
 import com.studynotes.mylauncher.databinding.BottomSheetAppSettingsBinding
 import com.studynotes.mylauncher.databinding.LeadingIconWithTitleDialogItemBinding
 import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
+import com.studynotes.mylauncher.permissions.GenericPermissionFragment
+import com.studynotes.mylauncher.permissions.GenericPermissionListener
+import com.studynotes.mylauncher.permissions.isOverlayPermissionGranted
+import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
 import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
 import com.studynotes.mylauncher.roomDB.Model.HomeApp
@@ -66,7 +71,7 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
         lifecycleScope.launch {
             val isAppInHome = homeAppDao?.isAppInHome(appInfo.packageName!!) ?: false
             val actionTitle = if (isAppInHome) "Remove from Home" else "Add to Home"
-            val homeIcon = if(isAppInHome) R.drawable.ic_home_remove else R.drawable.ic_home
+            val homeIcon = if (isAppInHome) R.drawable.ic_home_remove else R.drawable.ic_home
 
             bindingLeadingIconTitleTile(
                 binding.optionAddRemoveHomeApp,
@@ -89,7 +94,11 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
                 titleRes = actionTitle,
                 context = context
             ) {
-                enableDisableSmartUsage(isAppRestricted, context)
+                if(checkFeaturePermission(context)){
+                    enableDisableSmartUsage(isAppRestricted, context)
+                }else{
+                    ViewUtils.showToast(context, "Required Permissions")
+                }
             }
         }
 
@@ -170,6 +179,39 @@ class AppSettingsBottomSheet(private val appInfo: AppInfo) : BottomSheetDialogFr
             context?.let { it1 -> ViewUtils.showToast(it1, "Unable to open App Info") }
         }
         dismiss()
+    }
+
+    private fun checkFeaturePermission(context: Context) : Boolean{
+
+        if(!isOverlayPermissionGranted(context)){
+
+            GenericPermissionFragment.showFragment(
+                fragmentManager = requireActivity().supportFragmentManager,
+                object : GenericPermissionListener {
+                    override fun onResume() {
+                        checkFeaturePermission(context)
+                    }
+
+                    override fun onPermissionDenied() {
+                    }
+
+                    override fun onPermissionGranted() {
+                        Handler().postDelayed({
+                            checkFeaturePermission(context)
+                        }, 350L)
+                    }
+                },
+                messageBoxText = getString(R.string.title_request_overlay_permission),
+                image = R.drawable.icon_layers,
+                positiveButtonText = "Yes, Enable",
+                permissionType = GenericPermissionFragment.Companion.GenericPermissionType.OVERLAY
+            )
+        }
+        else{
+//            ViewUtils.showToast(context, "All Set!")
+            return true
+        }
+        return false
     }
 
 }

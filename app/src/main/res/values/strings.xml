@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Launcher</string>
+    <string name="app_name">Liquid Launcher</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title">Title</string>
     <string name="settings">Settings</string>
@@ -16,4 +16,9 @@
     <string name="subtitle">Subtitle</string>
     <string name="distraction_free_label">Your selected apps are hidden, creating a distraction-free environment for your work.</string>
     <string name="wallpaper_option_desc">Let your wallpaper evolve with the sun.</string>
+    <string name="permission_dialog_negative_button_text">Maybe Later</string>
+    <string name="permission_denied">Permission Denied, Try again!!</string>
+    <string name="permission_granted">Permission Granted</string>
+    <string name="title_request_overlay_permission">Receive alerts when reaching your usage limit</string>
+
 </resources>

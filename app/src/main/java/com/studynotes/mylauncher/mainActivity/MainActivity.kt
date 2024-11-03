@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat
 import com.studynotes.mylauncher.R
 import com.studynotes.mylauncher.mainActivity.adapter.ScreenSlidePagerAdapter
 import com.studynotes.mylauncher.databinding.ActivityMainBinding
+import com.studynotes.mylauncher.popUpFragments.TitleSubtitleBottomSheet
 import com.studynotes.mylauncher.prefs.BasePreferenceManager
 import com.studynotes.mylauncher.prefs.SharedPrefsConstants
 import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
@@ -35,50 +37,39 @@ class MainActivity : AppCompatActivity() {
         setUpStatusBar()
         setUpViews()
         setUpStatusBar()
-        checkPermission()
         setUpRoomDB()
+        showLauncherSelectionIfNotDefault()
+    }
+
+    private fun showLauncherSelectionIfNotDefault() {
+        if (!isCurrentLauncherDefault()) {
+            TitleSubtitleBottomSheet().show(supportFragmentManager, "TitleSubtitleBottomSheet")
+        }
+    }
+
+    private fun isCurrentLauncherDefault(): Boolean {
+        val pm = this.packageManager
+        val intent = Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_HOME)
+        }
+        val resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        return resolveInfo?.activityInfo?.packageName == this.packageName
     }
 
     private fun setUpRoomDB() {
         database = LauncherDatabase.getDatabase(this)
     }
 
-
-    private fun checkPermission() {
-        if (!Settings.canDrawOverlays(this)) {
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:${this.packageName}")
-            )
-            this.startActivity(intent)
-        } else if (!hasUsageStatsPermission()) {
-            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-            startActivity(intent)
-
-        } else {
-            ViewUtils.showToast(this, "All Set!")
-        }
-    }
-
-    private fun hasUsageStatsPermission(): Boolean {
-        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = appOps.checkOpNoThrow(
-            AppOpsManager.OPSTR_GET_USAGE_STATS,
-            android.os.Process.myUid(),
-            packageName
-        )
-        return mode == AppOpsManager.MODE_ALLOWED
-    }
-
     private fun setUpViews() {
         setUpViewPager()
-
-        wallpaperState = BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
+        wallpaperState =
+            BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
         setUpWallPaper(wallpaperState)
     }
 
     fun setUpWallPaper(wallpaperState: Boolean) {
-        val focusModeState = BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_FOCUS_MODE, false)
+        val focusModeState =
+            BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_FOCUS_MODE, false)
         if (focusModeState) {
             val backgroundColor = ContextCompat.getColor(this, R.color.black)
             binding.root.setBackgroundColor(backgroundColor)
@@ -134,4 +125,5 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         setUpViews()
     }
+
 }

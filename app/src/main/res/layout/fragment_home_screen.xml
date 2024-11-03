@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_8"
@@ -36,11 +36,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/size_20"
+        android:layout_marginEnd="@dimen/size_20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/placeholder_guide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/size_20"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/guide_settings"
+            layout="@layout/more_options_layout" />
+
+        <include
+            android:id="@+id/guide_app"
+            layout="@layout/more_options_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_40" />
+
+        <include
+            android:id="@+id/guide_home"
+            layout="@layout/more_options_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_40" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_add_home_apps"
@@ -51,10 +85,10 @@
         android:background="@drawable/widget_card_bg"
         android:backgroundTint="@color/secondaryCardColor"
         android:gravity="center"
-        android:visibility="gone"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/size_16"
         android:paddingVertical="@dimen/size_4"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewHomeApps">
 

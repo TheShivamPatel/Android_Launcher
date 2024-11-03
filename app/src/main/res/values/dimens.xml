@@ -212,6 +212,7 @@
     <dimen name="size_108">108dp</dimen>
     <dimen name="size_115">115dp</dimen>
     <dimen name="size_120">120dp</dimen>
+    <dimen name="size_128">128dp</dimen>
     <dimen name="size_126">126dp</dimen>
     <dimen name="size_130">130dp</dimen>
     <dimen name="size_140">140dp</dimen>

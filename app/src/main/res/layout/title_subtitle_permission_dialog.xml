@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/rounded_bg"
+    android:backgroundTint="@color/white"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/size_36">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/text_size_12"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_120"
+            android:scaleType="centerCrop"
+            android:src="@drawable/liquid_bg"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/size_16">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_16"
+            android:fontFamily="@font/montserrat_semibold"
+            android:text="Welcome home."
+            android:textColor="@color/blue_500"
+            android:textSize="@dimen/text_size_26"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/img_close"
+            android:layout_width="@dimen/size_22"
+            android:layout_height="@dimen/size_22"
+            android:src="@drawable/ic_close"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/size_16"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16"
+        android:layout_marginTop="@dimen/size_8"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Set Liquid Launcher as default home"
+        android:textSize="@dimen/text_size_20" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/size_16"
+        android:layout_marginTop="@dimen/size_8"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="Flow Through Simplicity."
+        android:textSize="@dimen/text_size_14" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/positive_button"
+        style="@style/primaryButtonStyle"
+        android:text="Set as default"
+        android:layout_marginHorizontal="@dimen/size_16"
+        android:layout_marginTop="@dimen/size_42"/>
+
+</LinearLayout>

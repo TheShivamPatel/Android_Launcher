@@ -5,10 +5,11 @@
         <item name="cornerSize">50%</item>
     </style>
 
-
     <style name="RoundedSquare">
         <item name="cornerSize">30%</item>
     </style>
 
-
+    <style name="TopRoundedSquare">
+        <item name="android:background">@drawable/rounded_top_corners</item>
+    </style>
 </resources>
