@@ -6,8 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".fragments.home.HomeScreenFragment">
 
-    <TextView
+    <TextClock
         android:id="@+id/tv_clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="hh:mm"
+        android:gravity="center_horizontal"
+        android:textColor="@color/white"
+        android:layout_marginStart="@dimen/size_20"
+        android:layout_marginTop="@dimen/size_100"
+        android:textSize="@dimen/text_size_44"
+        android:fontFamily="@font/montserrat_semibold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_clock1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/size_20"
@@ -16,6 +30,7 @@
         android:text="12:59"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_44"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

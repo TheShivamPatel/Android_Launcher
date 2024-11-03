@@ -1,20 +1,15 @@
 package com.studynotes.mylauncher.fragments.home
 
-import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.studynotes.mylauncher.R
 import com.studynotes.mylauncher.specialApps.SpecialAppsActivity
@@ -23,16 +18,14 @@ import com.studynotes.mylauncher.databinding.MoreOptionsLayoutBinding
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerAdapter
 import com.studynotes.mylauncher.fragments.appDrawer.adapter.AppDrawerLayout
 import com.studynotes.mylauncher.fragments.appDrawer.model.AppInfo
-import com.studynotes.mylauncher.fragments.home.utils.DateLiveData
-import com.studynotes.mylauncher.fragments.home.utils.TimeLiveData
 import com.studynotes.mylauncher.roomDB.Dao.HomeAppDao
 import com.studynotes.mylauncher.roomDB.Dao.RestrictedAppDao
 import com.studynotes.mylauncher.roomDB.database.LauncherDatabase
 import com.studynotes.mylauncher.settings.SettingsActivity
 import com.studynotes.mylauncher.viewUtils.ViewUtils
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
-import java.util.Timer
 
 class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
 
@@ -41,8 +34,7 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     private var appsList: MutableList<AppInfo> = mutableListOf()
     private var homeAppDao: HomeAppDao? = null
     private lateinit var restrictedAppDao: RestrictedAppDao
-//    private val dateLiveData = DateLiveData()
-//    private val timeLiveData = TimeLiveData()
+    private val dateFormat = SimpleDateFormat("EEE, dd MMMM", Locale.getDefault())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,15 +54,8 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     }
 
     private fun setUpView() {
-
-//        dateLiveData.observe(viewLifecycleOwner, Observer { date ->
-//            binding.tvDate.text = date
-//        })
-//
-//        timeLiveData.observe(viewLifecycleOwner, Observer { time ->
-//            binding.tvClock.text = time
-//        })
-
+        val currentDate = dateFormat.format(Date())
+        binding.tvDate.text = currentDate
     }
 
     private fun setUpDatabase() {
