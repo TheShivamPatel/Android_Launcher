@@ -1,5 +1,5 @@
 # Liquid Launcher
-## Flow Though Simplicity
+## Flow Through Simplicity
 A minimalistic and productivity-focused launcher designed to streamline your device experience. With intuitive navigation, customizable layouts, and essential tools, Liquid Launcher eliminates distractions and enhances focus, allowing you to flow effortlessly through your daily tasks.
 
 ## Screen Shots
