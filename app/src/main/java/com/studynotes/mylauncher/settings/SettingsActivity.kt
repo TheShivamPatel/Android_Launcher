@@ -141,7 +141,7 @@ class SettingsActivity : AppCompatActivity() {
         if (isChecked) {
             val backgroundColor = ContextCompat.getColor(this, R.color.black)
             binding.root.setBackgroundColor(backgroundColor)
-            BasePreferenceManager.putString(this, SharedPrefsConstants.KEY_FOCUS_MODE_BG_COLOR, AppDrawerLayout.LINEAR_LAYOUT.toString())
+            BasePreferenceManager.putString(this, SharedPrefsConstants.KEY_SELECTED_DRAWER_LAYOUT, AppDrawerLayout.LINEAR_LAYOUT.toString())
         } else {
             val backgroundColor = ContextCompat.getColor(this, R.color.transparent)
             binding.root.setBackgroundColor(backgroundColor)

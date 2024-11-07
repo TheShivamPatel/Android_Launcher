@@ -43,9 +43,6 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".services.SpendTimeLimitService"
-            android:enabled="true" />
     </application>
 
 </manifest>
