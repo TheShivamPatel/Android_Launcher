@@ -36,6 +36,12 @@ class HomeScreenFragment : Fragment(R.layout.fragment_home_screen) {
     private lateinit var restrictedAppDao: RestrictedAppDao
     private val dateFormat = SimpleDateFormat("EEE, dd MMMM", Locale.getDefault())
 
+    companion object {
+        fun newInstance(): HomeScreenFragment {
+            return HomeScreenFragment()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

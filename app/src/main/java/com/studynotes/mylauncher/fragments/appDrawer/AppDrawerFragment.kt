@@ -42,6 +42,12 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer),
     private lateinit var restrictedAppDao: RestrictedAppDao
     private lateinit var hiddenAppDao: HiddenAppDao
 
+    companion object {
+        fun newInstance(): AppDrawerFragment {
+            return AppDrawerFragment()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

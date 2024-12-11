@@ -17,6 +17,12 @@ class FeedScreenFragment : Fragment(R.layout.fragment_feed_screen) {
 
     private lateinit var binding: FragmentFeedScreenBinding
 
+    companion object {
+        fun newInstance(): FeedScreenFragment {
+            return FeedScreenFragment()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
