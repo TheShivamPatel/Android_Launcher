@@ -20,5 +20,6 @@
     <string name="permission_denied">Permission Denied, Try again!!</string>
     <string name="permission_granted">Permission Granted</string>
     <string name="title_request_overlay_permission">Receive alerts when reaching your usage limit</string>
+    <string name="top_stories">Top stories</string>
 
 </resources>

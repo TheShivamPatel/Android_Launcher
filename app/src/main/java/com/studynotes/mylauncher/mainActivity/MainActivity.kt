@@ -27,13 +27,12 @@ import com.studynotes.mylauncher.viewUtils.ViewUtils
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-//    private var pagerAdapter: ScreenSlidePagerAdapter? = null
     private var wallpaperState: Boolean = false
     private var database: LauncherDatabase? = null
     private val adapter by lazy {
         ScreenSlidePagerAdapter(supportFragmentManager)
     }
-    private var currentTabSelectedPosition = 0
+    private var currentTabSelectedPosition = 1
     private val pageSelectedListener = object : ViewPager.SimpleOnPageChangeListener() {
         override fun onPageSelected(position: Int) {
             currentTabSelectedPosition = position
@@ -45,8 +44,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setUpStatusBar()
-//        setUpViews()
-        setUpStatusBar()
+        setUpViews()
         setUpRoomDB()
         showLauncherSelectionIfNotDefault()
         setUpTabs()
@@ -78,14 +76,39 @@ class MainActivity : AppCompatActivity() {
         database = LauncherDatabase.getDatabase(this)
     }
 
-//    private fun setUpViews() {
-//        setUpViewPager()
-//        wallpaperState =
-//            BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
-//        setUpWallPaper(wallpaperState)
-//    }
+    private fun setUpViews() {
+        setUpTabs()
+        setUpBottomNavigationMenu()
+        wallpaperState =
+            BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_AUTO_WALLPAPER, false)
+        setUpWallPaper(wallpaperState)
+    }
 
-    fun setUpWallPaper(wallpaperState: Boolean) {
+    private fun setUpTabs() {
+        binding.viewPager.adapter = adapter
+        binding.viewPager.addOnPageChangeListener(pageSelectedListener)
+        val defaultPageIndex = 1
+        binding.viewPager.currentItem = defaultPageIndex
+    }
+
+    private fun setUpBottomNavigationMenu() {
+        val tabs: List<TabItem> = listOf(
+            TabItem(
+                "Feeds",
+            ),
+            TabItem(
+                "Home",
+                true,
+            ),
+            TabItem(
+                "AppDrawer",
+            ),
+        )
+        adapter.setItems(tabs)
+        binding.viewPager.addOnPageChangeListener(pageSelectedListener)
+    }
+
+    private fun setUpWallPaper(wallpaperState: Boolean) {
         val focusModeState =
             BasePreferenceManager.getBoolean(this, SharedPrefsConstants.KEY_FOCUS_MODE, false)
         if (focusModeState) {
@@ -118,45 +141,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun setUpViewPager() {
-//        pagerAdapter = ScreenSlidePagerAdapter(this)
-//        binding.viewPager.adapter = pagerAdapter
-//        binding.viewPager.setCurrentItem(0, false)
-//        binding.viewPager.setPageTransformer(FadePageTransformer())
-//    }
-
     @SuppressLint("MissingSuperCall")
     override fun onBackPressed() {
-        val defaultPageIndex = 0
+        val defaultPageIndex = 1
         if (binding.viewPager.currentItem != defaultPageIndex) {
             binding.viewPager.setCurrentItem(defaultPageIndex, true)
         }
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        setUpViews()
-//    }
-
-    private fun setUpTabs() {
-        binding.viewPager.adapter = adapter
-    }
-
-    private fun setUpBottomNavigationMenu() {
-        val tabs: List<TabItem> = listOf(
-            TabItem(
-                "Home"
-            ),
-            TabItem(
-                "AppDrawer",
-                true,
-            ),
-            TabItem(
-                "Feeds",
-            ),
-        )
-        adapter.setItems(tabs)
-        binding.viewPager.addOnPageChangeListener(pageSelectedListener)
+    override fun onResume() {
+        super.onResume()
+        setUpViews()
     }
 
 }

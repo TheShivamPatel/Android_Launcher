@@ -24,17 +24,3 @@ class ScreenSlidePagerAdapter(supportFragmentManager: FragmentManager) :
         return MainPageEvaluator.getFragmentBasedOnPageType(items[position])
     }
 }
-
-
-//class ScreenSlidePagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
-//    override fun getItemCount(): Int = 2
-//
-//    override fun createFragment(position: Int): Fragment {
-//        return when (position) {
-////            0 -> FeaturedWidgetFragment()
-//            0 -> HomeScreenFragment()
-//            1 -> AppDrawerFragment()
-//            else -> HomeScreenFragment()
-//        }
-//    }
-//}

@@ -11,10 +11,23 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlin.math.roundToInt
 
 
 object ViewUtils {
+
+    fun formatDate(inputDate: String): String {
+        return try {
+            val inputFormatter = DateTimeFormatter.ISO_ZONED_DATE_TIME
+            val outputFormatter = DateTimeFormatter.ofPattern("EEE, MMM d, yyyy", Locale.ENGLISH)
+            ZonedDateTime.parse(inputDate, inputFormatter).format(outputFormatter)
+        } catch (e: Exception) {
+            "Invalid Date Format"
+        }
+    }
 
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()

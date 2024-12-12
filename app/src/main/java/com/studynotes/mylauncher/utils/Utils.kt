@@ -14,6 +14,12 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Calendar
 
+enum class ApiResultType {
+    TYPE_SUCCESS,
+    TYPE_LOADING,
+    TYPE_ERROR
+}
+
 enum class TimeBase {
     MORNING, EVENING, NIGHT
 }

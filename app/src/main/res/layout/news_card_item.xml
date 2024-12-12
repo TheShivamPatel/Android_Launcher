@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/size_16"
     android:layout_marginTop="@dimen/size_20"
-    android:background="@drawable/rounded_bg"
+    android:background="@drawable/glassmorphism_off"
     android:padding="@dimen/size_12">
 
 
@@ -65,7 +64,5 @@
         android:textColor="@color/grey_300"
         app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
